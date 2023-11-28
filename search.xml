@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>标题</title>
+    <url>/2023/11/28/%E6%A0%BC%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>ubuntu部署hexo博客</title>
     <url>/2022/04/21/ubuntu%E9%83%A8%E7%BD%B2hexo%E5%8D%9A%E5%AE%A2%20/</url>
     <content><![CDATA[<h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><h2 id="1-1-安装nodejs和npm"><a href="#1-1-安装nodejs和npm" class="headerlink" title="1.1 安装nodejs和npm"></a>1.1 安装nodejs和npm</h2><p><code>CTRL + ALT +T</code>  打开终端</p>
@@ -35,10 +40,5 @@
 <p>去gitee的仓库  -&gt;  服务-&gt;gitee pages             #申请，然后点击更新<br><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656285.png" alt="gritrr"><br>访问即可</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.bilibili.com/video/BV1Yb411a7ty?spm_id_from=333.337.search-card.all.click" title="codesheep">codesheep</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>标题</title>
-    <url>/2023/11/28/%E6%A0%BC%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
