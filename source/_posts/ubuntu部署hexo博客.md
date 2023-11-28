@@ -1,8 +1,8 @@
 ---
-title: ubuntu部署hexo博客
-date: "2022-04-21 21:40:07"
-type: Ubuntu,blog
-description: 使用node和npv，在Ubuntu系统中安装hexo博客，并且使用Gitee来托管静态页面。
+title: 'ubuntu部署hexo博客'
+date: '2023-11-28' 
+type: "tags"
+description: '使用node和npv，在Ubuntu系统中安装hexo博客，并且使用Gitee来托管静态页面。'
 ---
 # 安装环境
 ## 1.1 安装nodejs和npm
