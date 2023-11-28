@@ -15,7 +15,7 @@ sudo apt-get install npm              #安装npm
 node -v
 npm  -v
 ```
-![](https://gitee.com/hellohehe1/photo/raw/master/202211201656278.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/1.png)
 安装成功即显示版本号
 
 利用npm安装cnpm(国内的快一点)
@@ -52,8 +52,7 @@ sudo su                      #切换到root用户
 cnpm install  -g hexo-cli              #安装hexo
 hexo -v                    #验证
 ```
-![](https://gitee.com/hellohehe1/photo/raw/master/202211201656279.png)
-
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/2.png)
 ```shell
 pwd                #查看当前路径
 mkdir  blog      #创建blog文件夹，后续出现错误，删掉文件夹重新开始
@@ -62,20 +61,19 @@ sudo hexo init      #初始化博客
 hexo s              #本地启动
 ```
 `CTRL + C` 关闭
-![](https://gitee.com/hellohehe1/photo/raw/master/202211201656280.png)
-
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/3.png)
 ```shell
 hexo n "我的博客"    #创建新的博客
 ```
-![hexo n](https://gitee.com/hellohehe1/photo/raw/master/202211201656281.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/4.png)
 ```shell
 pwd
 cd source/_posts/         #进入到刚才创建的博客的目录
 ls                                             #列出目录下的文件
 vim 我的博客.md             #用vim打开我的博客
 ```
-![vim](https://gitee.com/hellohehe1/photo/raw/master/202211201656282.png)
-![vim](https://gitee.com/hellohehe1/photo/raw/master/202211201656283.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/5.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/6.png)
 
 ```shell
 # 以及目录
@@ -97,7 +95,7 @@ cnpm install --save hexo-deployer-git
  ls
  vim _config.yml
 ```
-![git](https://gitee.com/hellohehe1/photo/raw/master/202211201656284.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/7.png)
 改为
 
 ```shell
@@ -108,7 +106,7 @@ branch: master
 hexo d                                                          #部署到gitee上，可能会提示你输入gitee账号和密码
 ```
 去gitee的仓库  ->  服务->gitee pages             #申请，然后点击更新
-![gritrr](https://gitee.com/hellohehe1/photo/raw/master/202211201656285.png)
+![](https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/8.png)
 访问即可
 
 
