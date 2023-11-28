@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>标题</title>
+    <url>/2023/11/28/%E6%A0%BC%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>ubuntu部署hexo博客</title>
     <url>/2023/11/28/ubuntu%E9%83%A8%E7%BD%B2hexo%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><h2 id="1-1-安装nodejs和npm"><a href="#1-1-安装nodejs和npm" class="headerlink" title="1.1 安装nodejs和npm"></a>1.1 安装nodejs和npm</h2><p><code>CTRL + ALT +T</code>  打开终端</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt-get install nodejs           #安装nodejs</span><br><span class="line">sudo apt-get install npm              #安装npm</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看是否安装成功</span></span><br><span class="line">node -v</span><br><span class="line">npm  -v</span><br></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656278.png"><br>安装成功即显示版本号</p>
+<p><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/1.png"><br>安装成功即显示版本号</p>
 <p>利用npm安装cnpm(国内的快一点)</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br><span class="line">cnpm -v      #查看</span><br></pre></td></tr></table></figure>
 <h2 id="1-2创建gitee仓库"><a href="#1-2创建gitee仓库" class="headerlink" title="1.2创建gitee仓库"></a>1.2创建gitee仓库</h2><p>新建一个仓库，路径路径必须是你的用户名（不是中文，可以在个人主页看到）<br>例如：我的用户名为hello ,仓库路径就为  hello.gitee.io<br>仓库名也为 hello</p>
@@ -18,27 +23,22 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh -T git@git.oschina.net   #测试连接是否畅通</span><br></pre></td></tr></table></figure>
 <h1 id="搭建hexo博客框架"><a href="#搭建hexo博客框架" class="headerlink" title="搭建hexo博客框架"></a>搭建hexo博客框架</h1><p><code>CTRL + ALT +T</code>  打开终端</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo su                      #切换到root用户</span><br><span class="line">cnpm install  -g hexo-cli              #安装hexo</span><br><span class="line">hexo -v                    #验证</span><br></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656279.png"></p>
+<p><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/2.png"></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pwd                #查看当前路径</span><br><span class="line">mkdir  blog      #创建blog文件夹，后续出现错误，删掉文件夹重新开始</span><br><span class="line">cd blog/         #进入blog目录下</span><br><span class="line">sudo hexo init      #初始化博客</span><br><span class="line">hexo s              #本地启动</span><br></pre></td></tr></table></figure>
-<p><code>CTRL + C</code> 关闭<br><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656280.png"></p>
+<p><code>CTRL + C</code> 关闭<br><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/3.png"></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo n &quot;我的博客&quot;    #创建新的博客</span><br></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656281.png" alt="hexo n"></p>
+<p><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/4.png"></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pwd</span><br><span class="line">cd source/_posts/         #进入到刚才创建的博客的目录</span><br><span class="line">ls                                             #列出目录下的文件</span><br><span class="line">vim 我的博客.md             #用vim打开我的博客</span><br></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656282.png" alt="vim"><br><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656283.png" alt="vim"></p>
+<p><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/5.png"><br><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/6.png"></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">以及目录</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 二级目录            #后有空格</span></span></span><br><span class="line">--- 分割线</span><br><span class="line">按ESC键 输  ：wq   #保存退出（包括：）</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd ../..                                      #退回到blog目录</span><br><span class="line">hexo clean                            #清理一下</span><br><span class="line">hexo g                                     #生成</span><br><span class="line">hexo s                                     #本地启动</span><br></pre></td></tr></table></figure>
 <h1 id="推到gitee上"><a href="#推到gitee上" class="headerlink" title="推到gitee上"></a>推到gitee上</h1><p>在blog目录下</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git </span><br><span class="line"> ls</span><br><span class="line"> vim _config.yml</span><br></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656284.png" alt="git"><br>改为</p>
+<p><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/7.png"><br>改为</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">type: git                                                     #每个：后都有空格</span><br><span class="line">repo: 你创建的仓库地址</span><br><span class="line">branch: master</span><br><span class="line">按ESC键 输 ：wq</span><br><span class="line">hexo d                                                          #部署到gitee上，可能会提示你输入gitee账号和密码</span><br></pre></td></tr></table></figure>
-<p>去gitee的仓库  -&gt;  服务-&gt;gitee pages             #申请，然后点击更新<br><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656285.png" alt="gritrr"><br>访问即可</p>
+<p>去gitee的仓库  -&gt;  服务-&gt;gitee pages             #申请，然后点击更新<br><img src="https://picgopicturesking.oss-cn-beijing.aliyuncs.com/pictures/8.png"><br>访问即可</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.bilibili.com/video/BV1Yb411a7ty?spm_id_from=333.337.search-card.all.click" title="codesheep">codesheep</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>标题</title>
-    <url>/2023/11/28/%E6%A0%BC%E5%BC%8F/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
