@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>ubuntu部署hexo博客</title>
-    <url>/2023/11/28/ubuntu%E9%83%A8%E7%BD%B2hexo%E5%8D%9A%E5%AE%A2%20/</url>
+    <url>/2023/11/28/ubuntu%E9%83%A8%E7%BD%B2hexo%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h1><h2 id="1-1-安装nodejs和npm"><a href="#1-1-安装nodejs和npm" class="headerlink" title="1.1 安装nodejs和npm"></a>1.1 安装nodejs和npm</h2><p><code>CTRL + ALT +T</code>  打开终端</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update </span><br><span class="line">sudo apt-get install nodejs           #安装nodejs</span><br><span class="line">sudo apt-get install npm              #安装npm</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看是否安装成功</span></span><br><span class="line">node -v</span><br><span class="line">npm  -v</span><br></pre></td></tr></table></figure>
 <p><img src="https://gitee.com/hellohehe1/photo/raw/master/202211201656278.png"><br>安装成功即显示版本号</p>
