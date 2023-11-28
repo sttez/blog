@@ -1,0 +1,8 @@
+
+# 设置换行符风格
+* text=auto
+
+# 对于特定文件，禁用换行符转换
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
