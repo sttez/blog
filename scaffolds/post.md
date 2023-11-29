@@ -1,5 +1,15 @@
 ---
 title: {{ title }}
 date: {{ date }}
-tags:
+type: 标签
+keywords: 关键词
+comments: 评论模块
+description: 描述
+top_img: 页面顶部图片
+mathjax:
+katex:
+aside:
+aplayer:
+highlight_shrink:
+random:
 ---
