@@ -44,3 +44,8 @@ src/pages/myself.astro
 
 # Bangumi generated data
 src/data/bangumi-data.json
+
+
+.env.example
+.github
+.vscode
