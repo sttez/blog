@@ -97,3 +97,4 @@ export function getFileDirFromPath(filePath: string): string {
 export function url(path: string) {
 	return joinUrl("", import.meta.env.BASE_URL, path);
 }
+

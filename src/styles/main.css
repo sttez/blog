@@ -16,7 +16,13 @@
   font-weight: 500;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "微软雅黑";
+  src: url("/assets/font/微软雅黑.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 /* 导入 萝莉体 第二版 字体 */
 @font-face {
   font-family: "萝莉体 第二版";
@@ -718,3 +724,4 @@ html {
 :root:not(.dark) .custom-md spoiler {
   --_spoiler-mask: color-mix(in oklch, var(--primary) 55%, white 45%);
 }
+
