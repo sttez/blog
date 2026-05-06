@@ -1,23 +1,24 @@
 ---
-title: Include Video in the Posts
+title: 在文章中嵌入视频
 published: 2022-08-01
-description: This post demonstrates how to include embedded video in a blog post.
-tags: [Example, Video]
-category: Examples
+description: 这篇文章演示如何在博客文章中嵌入视频。
+tags: [示例, 视频]
+category: 示例
 draft: false
 ---
 
-Just copy the embed code from YouTube or other platforms, and paste it in the markdown file.
+只需从 YouTube 或其他平台复制嵌入代码，粘贴到 Markdown 文件中即可。
 
 ```yaml
 ---
-title: Include Video in the Post
+title: 在文章中嵌入视频
 published: 2023-10-19
 // ...
 ---
 
-<iframe width="100%" height="468" src="https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+<iframe width="100%" height="468" src="https://www.youtube.com/embed/视频ID" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 ```
+
 ## YouTube
 
 <iframe width="100%" height="468" src="https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
