@@ -23,7 +23,7 @@ const SITE_LANG = "zh_CN"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
 const SITE_TIMEZONE = 8; //设置你的网站时区 from -12 to 12 default in UTC+8
 export const siteConfig: SiteConfig = {
 	title: "Mizuki",
-	subtitle: "One demo website",
+	subtitle: "个人博客",
 	siteURL: "https://zhh-blog.netlify.app/", // 请替换为你的站点URL，以斜杠结尾
 	siteStartDate: "2026-01-05", // 站点开始运行日期，用于站点统计组件计算运行天数
 
@@ -326,7 +326,7 @@ export const profileConfig: ProfileConfig = {
 	},
 	links: [
 		{
-			name: "Bilibli",
+			name: "Bilibili",
 			icon: "fa6-brands:bilibili",
 			url: "https://bilibili.com",
 		},
@@ -411,7 +411,7 @@ export const announcementConfig: AnnouncementConfig = {
 	closable: false, // 允许用户关闭公告
 	link: {
 		enable: true, // 启用链接
-		text: "Learn More", // 链接文本
+		text: "了解更多", // 链接文本
 		url: "/about/", // 链接 URL
 		external: false, // 内部链接
 	},
@@ -625,16 +625,16 @@ export const pioConfig: import("./types/config").PioConfig = {
 	mode: "draggable", // 默认为可拖拽模式
 	hiddenOnMobile: true, // 默认在移动设备上隐藏
 	dialog: {
-		welcome: "Welcome to Mizuki Website!", // 欢迎词
+		welcome: "欢迎来到 Mizuki 博客！", // 欢迎词
 		touch: [
-			"What are you doing?",
-			"Stop touching me!",
-			"HENTAI!",
-			"Don't bully me like that!",
+			"你在干嘛呀？",
+			"别摸了别摸了！",
+			"变态！",
+			"不要欺负我啦！",
 		], // 触摸提示
-		home: "Click here to go back to homepage!", // 首页提示
-		skin: ["Want to see my new outfit?", "The new outfit looks great~"], // 换装提示
-		close: "QWQ See you next time~", // 关闭提示
+		home: "点击这里回到首页！", // 首页提示
+		skin: ["想看看我的新衣服吗？", "新衣服真好看~"], // 换装提示
+		close: "QWQ 下次再见~", // 关闭提示
 		link: "https://github.com/matsuzaka-yuki/Mizuki", // 关于链接
 	},
 };
