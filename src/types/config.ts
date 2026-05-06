@@ -332,6 +332,7 @@ export type WidgetComponentType =
 	| "pio" // 添加 pio 组件类型
 	| "site-stats" // 站点统计组件
 	| "calendar" // 日历组件
+	| "projects" // 文章项目归类组件
 	| "custom";
 
 export type WidgetComponentConfig = {

@@ -80,6 +80,11 @@ export function getCategoryUrl(category: string | null): string {
 	return url(`/archive/?category=${encodeURIComponent(category.trim())}`);
 }
 
+export function getProjectUrl(project: string): string {
+	if (!project) return url("/archive/");
+	return url(`/archive/?project=${encodeURIComponent(project.trim())}`);
+}
+
 export function getDir(path: string): string {
 	// 移除文件扩展名
 	const pathWithoutExt = removeFileExtension(path);

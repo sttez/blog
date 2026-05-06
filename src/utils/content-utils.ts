@@ -1,14 +1,28 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { getCategoryUrl, getPostUrl } from "@utils/url-utils";
+import { getCategoryUrl, getPostUrl, getProjectUrl } from "@utils/url-utils";
 import { initPostIdMap } from "@utils/permalink-utils";
+
+/**
+ * 从文章 ID（文件路径）中提取第一级目录作为项目名
+ * 例如 "MindHub/项目初始化.md" → "MindHub"
+ */
+function extractProject(id: string): string {
+	const segments = id.split("/");
+	return segments.length > 1 ? segments[0].trim() : "";
+}
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
 	const allBlogPosts = await getCollection("posts", ({ data }) => {
 		return import.meta.env.PROD ? data.draft !== true : true;
 	});
+
+	// 动态注入 project 字段
+	for (const post of allBlogPosts) {
+		(post.data as any).project = extractProject(post.id);
+	}
 
 	const sorted = allBlogPosts.sort((a, b) => {
 		// 首先按置顶状态排序，置顶文章在前
@@ -52,7 +66,7 @@ export async function getSortedPosts() {
 }
 export type PostForList = {
 	id: string;
-	data: CollectionEntry<"posts">["data"];
+	data: CollectionEntry<"posts">["data"] & { project: string };
 	url?: string; // 预计算的文章 URL
 };
 export async function getSortedPostsList(): Promise<PostForList[]> {
@@ -139,6 +153,40 @@ export async function getCategoryList(): Promise<Category[]> {
 			name: c,
 			count: count[c],
 			url: getCategoryUrl(c),
+		});
+	}
+	return ret;
+}
+
+export type Project = {
+	name: string;
+	count: number;
+	url: string;
+};
+
+export async function getProjectList(): Promise<Project[]> {
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
+	});
+
+	const count: { [key: string]: number } = {};
+	allBlogPosts.forEach((post) => {
+		const project = extractProject(post.id);
+		if (project) {
+			count[project] = count[project] ? count[project] + 1 : 1;
+		}
+	});
+
+	const lst = Object.keys(count).sort((a, b) => {
+		return count[b] - count[a]; // 按文章数降序
+	});
+
+	const ret: Project[] = [];
+	for (const p of lst) {
+		ret.push({
+			name: p,
+			count: count[p],
+			url: getProjectUrl(p),
 		});
 	}
 	return ret;

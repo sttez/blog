@@ -21,6 +21,9 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))];
 
 // 3. 提取所有分类 (去重且过滤掉 undefined)
 const categories = [...new Set(posts.map(post => post.data.category).filter((c): c is string => typeof c === "string"))];
+
+// 4. 提取所有项目 (去重且过滤掉空值)
+const projects = [...new Set(posts.map(post => post.data.project).filter((p): p is string => typeof p === "string" && p !== ""))];
 ---
 
 <MainGridLayout title={i18n(I18nKey.archive)}>
@@ -29,11 +32,11 @@ const categories = [...new Set(posts.map(post => post.data.category).filter((c):
         import('../scripts/right-sidebar-layout.js');
     </script>
 
-    <!-- 修复：补全缺失的 tags 和 categories 属性 -->
     <ArchivePanel
             sortedPosts={posts}
             tags={tags}
             categories={categories}
+            projects={projects}
             client:only="svelte"
     ></ArchivePanel>
 </MainGridLayout>

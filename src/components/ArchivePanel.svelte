@@ -6,12 +6,14 @@ import { i18n } from "../i18n/translation";
 
 export let tags: string[];
 export let categories: string[];
+export let projects: string[] = [];
 export let sortedPosts: Post[] = [];
 
 const params = new URLSearchParams(window.location.search);
 tags = params.has("tag") ? params.getAll("tag") : [];
 categories = params.has("category") ? params.getAll("category") : [];
 const uncategorized = params.get("uncategorized");
+const projectFilter = params.get("project");
 
 interface Post {
 	id: string;
@@ -20,6 +22,7 @@ interface Post {
 		title: string;
 		tags: string[];
 		category?: string;
+		project?: string;
 		published: Date;
 		alias?: string;
 		permalink?: string; // 自定义固定链接
@@ -62,6 +65,12 @@ onMount(async () => {
 
 	if (uncategorized) {
 		filteredPosts = filteredPosts.filter((post) => !post.data.category);
+	}
+
+	if (projectFilter) {
+		filteredPosts = filteredPosts.filter(
+			(post) => post.data.project === projectFilter,
+		);
 	}
 
 	// 按发布时间倒序排序，确保不受置顶影响

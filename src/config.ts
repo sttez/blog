@@ -521,6 +521,27 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			},
 		},
 		{
+			// 组件类型：文章项目归类组件
+			type: "projects",
+			// 是否启用该组件
+			enable: true,
+			// 组件显示顺序
+			order: 4,
+			// 组件位置
+			position: "top",
+			// 所在侧边栏
+			sidebar: "left",
+			// CSS 类名
+			class: "onload-animation",
+			// 动画延迟时间
+			animationDelay: 200,
+			// 响应式配置
+			responsive: {
+				// 折叠阈值：当项目数量超过5个时自动折叠
+				collapseThreshold: 5,
+			},
+		},
+		{
 			// 组件类型：站点统计组件
 			type: "site-stats",
 			// 是否启用该组件

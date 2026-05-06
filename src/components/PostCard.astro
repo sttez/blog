@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import { Icon } from "astro-icon/components";
-import { getFileDirFromPath, getTagUrl, getPostUrl } from "@/utils/url-utils";
+import { getFileDirFromPath, getTagUrl, getPostUrl, getProjectUrl } from "@/utils/url-utils";
 import { siteConfig } from "../config";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
@@ -27,7 +27,8 @@ const {
 	image,
 	description,
 	pinned,
-} = entry.data;
+	project,
+} = entry.data as typeof entry.data & { project?: string };
 
 const url = getPostUrl(entry);
 const hasCover = image !== undefined && image !== null && image !== "";
@@ -103,6 +104,23 @@ const { remarkPluginFrontmatter } = await render(entry);
 		</div>
 
 		<div class="flex flex-wrap gap-2 mt-2">
+			{
+				project && (
+					<a
+						href={getProjectUrl(project)}
+						class:list={[
+							siteConfig.tagStyle?.useNewStyle
+								? "link-lg transition text-50 text-xs font-medium px-2 py-1 rounded-lg hover:text-[var(--primary)] dark:hover:text-[var(--primary)] active:text-[var(--primary)] dark:active:text-[var(--primary)] group/project whitespace-nowrap"
+								: "btn-regular h-6 text-xs px-2 rounded-lg",
+						]}
+						aria-label={`View all posts in the ${project} project`}
+					>
+						<span class="transition-transform group-hover/project:translate-x-0.5">
+							{project}
+						</span>
+					</a>
+				)
+			}
 			{
 				tags && tags.length > 0 ? (
 					tags.map((tag) => (
