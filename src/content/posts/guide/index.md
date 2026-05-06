@@ -10,8 +10,6 @@ draft: false
 
 
 
-这篇博客模板基于 [Astro](https://astro.build/) 构建。本指南中未提及的内容，你可以在 [Astro 文档](https://docs.astro.build/) 中找到答案。
-
 ## 文章的 Front-matter
 
 ```yaml
