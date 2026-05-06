@@ -107,10 +107,17 @@ export async function getCategoryList(): Promise<Category[]> {
 		return import.meta.env.PROD ? data.draft !== true : true;
 	});
 	const count: { [key: string]: number } = {};
-	allBlogPosts.forEach((post: { data: { category: string | null } }) => {
+	allBlogPosts.forEach((post: { id: string; data: { category: string | null } }) => {
 		if (!post.data.category) {
-			const ucKey = i18n(I18nKey.uncategorized);
-			count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
+			// 从文件路径提取第一级目录作为项目分类
+			const segments = post.id.split("/");
+			if (segments.length > 1) {
+				const projectName = segments[0].trim();
+				count[projectName] = count[projectName] ? count[projectName] + 1 : 1;
+			} else {
+				const ucKey = i18n(I18nKey.uncategorized);
+				count[ucKey] = count[ucKey] ? count[ucKey] + 1 : 1;
+			}
 			return;
 		}
 
