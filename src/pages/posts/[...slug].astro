@@ -247,28 +247,27 @@ const jsonLd = {
                     />
                 ) : (
                     <>
-                        <Markdown class="mb-2 markdown-content onload-animation">
+                        <Markdown class="markdown-content onload-animation">
                             <Content />
                         </Markdown>
-
-
-                        {licenseConfig.enable && (
-                            <License
-                                title={entry.data.title}
-                                id={entry.id}
-                                pubDate={entry.data.published}
-                                author={entry.data.author}
-                                sourceLink={entry.data.sourceLink}
-                                licenseName={entry.data.licenseName}
-                                licenseUrl={entry.data.licenseUrl}
-                                class="mb-6 rounded-xl license-container onload-animation"
-                            />
-                        )}
                     </>
                 )
             }
         </div>
     </div>
+
+    {licenseConfig.enable && (
+        <License
+            title={entry.data.title}
+            id={entry.id}
+            pubDate={entry.data.published}
+            author={entry.data.author}
+            sourceLink={entry.data.sourceLink}
+            licenseName={entry.data.licenseName}
+            licenseUrl={entry.data.licenseUrl}
+            class="mb-4 rounded-xl card-base p-6 onload-animation"
+        />
+    )}
 
     {shareConfig.enable && (
         <div id="float-share">
