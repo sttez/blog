@@ -1,0 +1,88 @@
+<h2>页面布局细节</h2>
+<p class="subtitle">极简化后每个页面长什么样？</p>
+
+<h3>文章列表页（首页）</h3>
+<div class="mockup">
+  <div class="mockup-header">首页 / 文章列表</div>
+  <div class="mockup-body">
+    <div style="text-align:center;padding:16px 0;border-bottom:1px solid #eee;margin-bottom:12px">
+      <div style="font-size:20px;font-weight:bold">Mizuki</div>
+      <div style="font-size:13px;color:#666;margin:4px 0">个人博客</div>
+      <div style="font-size:16px;letter-spacing:4px;margin:6px 0">
+        <span style="margin:0 6px;cursor:pointer" title="GitHub">GH</span>
+        <span style="margin:0 6px;cursor:pointer" title="Bilibili">B</span>
+        <span style="margin:0 6px;cursor:pointer" title="Gitee">G</span>
+      </div>
+    </div>
+    <div style="padding:0 8px">
+      <div style="padding:10px 0;border-bottom:1px solid #f0f0f0">
+        <div style="font-size:14px;font-weight:600">文章标题一</div>
+        <div style="font-size:12px;color:#999">2026-05-01 · 5 min read</div>
+      </div>
+      <div style="padding:10px 0;border-bottom:1px solid #f0f0f0">
+        <div style="font-size:14px;font-weight:600">文章标题二</div>
+        <div style="font-size:12px;color:#999">2026-04-28 · 3 min read</div>
+      </div>
+      <div style="padding:10px 0;border-bottom:1px solid #f0f0f0">
+        <div style="font-size:14px;font-weight:600">文章标题三</div>
+        <div style="font-size:12px;color:#999">2026-04-20 · 8 min read</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:12px;font-size:12px;color:#aaa">1 2 3 ... 下一页</div>
+  </div>
+</div>
+
+<h3 style="margin-top:20px">还要继续精简吗？</h3>
+<p class="subtitle">当前网站有一些「花哨」元素，确认哪些要去掉</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="remove-banner" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉 Banner 轮播图</h3>
+      <p>首页不再显示图片轮播，用简洁文字标题代替</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-waves" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉波浪动画</h3>
+      <p>移除 banner 底部的 SVG 波浪动效</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-typewriter" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉打字机效果</h3>
+      <p>文字直接显示，不再有逐字打出的动画</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-swup" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉 Swup 页面过渡动画</h3>
+      <p>页面切换不再有滑入滑出效果，直接跳转</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-sidebar" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉侧边栏</h3>
+      <p>所有页面使用单栏布局，不再有左右侧边栏</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-custom-scrollbar" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉自定义滚动条</h3>
+      <p>使用浏览器默认滚动条</p>
+    </div>
+  </div>
+  <div class="option" data-choice="remove-animations" onclick="toggleSelect(this)">
+    <div class="letter">→</div>
+    <div class="content">
+      <h3>去掉所有入场动画</h3>
+      <p>页面加载时元素直接出现，不再有淡入、滑入效果</p>
+    </div>
+  </div>
+</div>

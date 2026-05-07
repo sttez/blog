@@ -1,0 +1,85 @@
+<h2>整体方案选择</h2>
+<p class="subtitle">基于你的选择，有两个实现方向</p>
+
+<div class="options">
+  <div class="option" data-choice="moderate" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>适度精简（推荐）</h3>
+      <p>去掉花哨动效和多余页面，保留现有布局骨架（侧边栏 + Banner + 打字机）。改动量小，保留熟悉感。</p>
+      <div style="margin-top:8px;font-size:12px">
+        <strong>保留：</strong>侧边栏、Banner 图片、波浪、打字机、暗色切换、搜索<br>
+        <strong>移除：</strong>自定义字体、入场动画、Swup 过渡、自定义滚动条、5 个页面<br>
+        <strong>改动量：</strong>中等，主要是配置调整 + 删除页面文件
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="aggressive" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>大幅极简</h3>
+      <p>在 A 基础上进一步：去掉侧边栏，Banner 改为静态单图或纯色，去掉波浪动画。更干净但改动更大。</p>
+      <div style="margin-top:8px;font-size:12px">
+        <strong>保留：</strong>Banner 静态单图、打字机、暗色切换、搜索<br>
+        <strong>移除：</strong>A 的全部 + 侧边栏 + 波浪动画 + 轮播<br>
+        <strong>改动量：</strong>较大，需要重写布局组件
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px">Sidebar 里的内容怎么办？</h3>
+<p class="subtitle">你保留了侧边栏，现在里面有很多 widget</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="keep-profile" onclick="toggleSelect(this)">
+    <div class="letter">✓</div>
+    <div class="content">
+      <h3>个人简介卡片</h3>
+      <p>头像、名字、简介、社交链接</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-categories" onclick="toggleSelect(this)">
+    <div class="letter">?</div>
+    <div class="content">
+      <h3>文章分类</h3>
+      <p>按分类浏览文章</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-tags" onclick="toggleSelect(this)">
+    <div class="letter">?</div>
+    <div class="content">
+      <h3>标签云</h3>
+      <p>按标签浏览文章</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-announcement" onclick="toggleSelect(this)">
+    <div class="letter">✗</div>
+    <div class="content">
+      <h3>公告栏</h3>
+      <p>站点公告/通知</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-projects" onclick="toggleSelect(this)">
+    <div class="letter">✗</div>
+    <div class="content">
+      <h3>项目卡片</h3>
+      <p>侧边栏里的项目预览（项目页已有完整展示）</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-stats" onclick="toggleSelect(this)">
+    <div class="letter">✗</div>
+    <div class="content">
+      <h3>站点统计</h3>
+      <p>文章数、运行天数等</p>
+    </div>
+  </div>
+  <div class="option" data-choice="keep-calendar" onclick="toggleSelect(this)">
+    <div class="letter">✗</div>
+    <div class="content">
+      <h3>日历</h3>
+      <p>发文日历热力图</p>
+    </div>
+  </div>
+</div>

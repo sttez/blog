@@ -307,6 +307,32 @@ const jsonLd = {
                         <Markdown class="mb-6 markdown-content onload-animation">
                             <Content />
                         </Markdown>
+
+                        {shareConfig.enable && (
+                            <div id="float-share" class="hidden lg:block" style="opacity:0;">
+                                <button id="float-share-btn" class="btn-regular h-10 w-10 rounded-lg flex items-center justify-center shadow-md" aria-label="分享">
+                                    <Icon name="material-symbols:share" class="text-xl" />
+                                </button>
+                                <div id="float-share-popup" class="hidden absolute right-0 top-12 bg-[var(--card-bg)] rounded-xl shadow-xl p-3 min-w-[10rem] z-50">
+                                    <button class="float-share-item w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="copy">
+                                        <Icon name="material-symbols:link" class="text-lg" />
+                                        <span>复制链接</span>
+                                    </button>
+                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="weibo" target="_blank" rel="noopener noreferrer">
+                                        <Icon name="fa6-brands:weibo" class="text-lg" />
+                                        <span>分享到微博</span>
+                                    </a>
+                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="twitter" target="_blank" rel="noopener noreferrer">
+                                        <Icon name="fa6-brands:x-twitter" class="text-lg" />
+                                        <span>分享到 X</span>
+                                    </a>
+                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="qq" target="_blank" rel="noopener noreferrer">
+                                        <Icon name="fa6-brands:qq" class="text-lg" />
+                                        <span>分享到 QQ</span>
+                                    </a>
+                                </div>
+                            </div>
+                        )}
                         
                         {shareConfig.enable && (
                             <div class="p-6 bg-[var(--license-block-bg)] rounded-xl mb-6 onload-animation">
@@ -503,4 +529,79 @@ const jsonLd = {
             }
         </a>
     </div>
+
+    {shareConfig.enable && (
+        <style>
+            #float-share {
+                position: fixed;
+                right: calc((100vw - var(--page-width)) / 2 - 3rem);
+                top: 5rem;
+                z-index: 45;
+                transition: opacity 0.3s;
+            }
+            #float-share.show {
+                opacity: 1 !important;
+            }
+            #float-share-popup {
+                transition: opacity 0.15s;
+            }
+        </style>
+
+        <script is:inline>
+        (function() {
+            var wrap = document.getElementById('float-share');
+            if (!wrap) return;
+            var btn = document.getElementById('float-share-btn');
+            var popup = document.getElementById('float-share-popup');
+            var url = encodeURIComponent(window.location.href);
+            var title = encodeURIComponent(document.title);
+
+            // fill share links
+            var items = popup.querySelectorAll('[data-action]');
+            items.forEach(function(el) {
+                var action = el.getAttribute('data-action');
+                if (action === 'weibo') el.href = 'https://service.weibo.com/share/share.php?url=' + url + '&title=' + title;
+                if (action === 'twitter') el.href = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title;
+                if (action === 'qq') el.href = 'https://connect.qq.com/widget/shareqq/index.html?url=' + url + '&title=' + title;
+            });
+
+            // show/hide on scroll
+            function onScroll() {
+                if (window.scrollY > 400) {
+                    wrap.classList.add('show');
+                } else {
+                    wrap.classList.remove('show');
+                    popup.classList.add('hidden');
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+
+            // toggle popup
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function() {
+                popup.classList.add('hidden');
+            });
+            popup.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // copy link
+            var copyBtn = popup.querySelector('[data-action="copy"]');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function() {
+                    navigator.clipboard.writeText(window.location.href).then(function() {
+                        copyBtn.querySelector('span').textContent = '已复制';
+                        setTimeout(function() {
+                            copyBtn.querySelector('span').textContent = '复制链接';
+                        }, 1500);
+                    });
+                    popup.classList.add('hidden');
+                });
+            }
+        })();
+        </script>
+    )}
 </MainGridLayout>

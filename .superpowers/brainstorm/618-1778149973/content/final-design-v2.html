@@ -1,0 +1,74 @@
+<h2>极简 MIZUKI — 最终设计 v2</h2>
+<p class="subtitle">侧边栏在左，文章列表在右</p>
+
+<div class="mockup">
+  <div class="mockup-header">全站布局</div>
+  <div class="mockup-body">
+    <div class="mock-nav">Mizuki | 文章 | 项目 | 关于 | 技能 | 友链 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔍 🌙</div>
+    <div style="margin:8px 0;padding:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;text-align:center;border-radius:4px">
+      <div style="font-size:18px;font-weight:bold">Mizuki</div>
+      <div style="font-size:12px;opacity:0.9">个人博客</div>
+      <div style="margin-top:6px;font-size:14px;letter-spacing:6px">
+        <span title="GitHub">GH</span> <span title="Bilibili">B</span> <span title="Gitee">G</span>
+      </div>
+      <div style="margin-top:4px;font-size:11px;opacity:0.7">〰〰〰〰〰〰</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="mock-sidebar" style="width:30%;font-size:11px">
+        <strong>个人简介</strong><br>
+        zhang-h-h<br>
+        GH · B · G<br><br>
+        <strong>分类</strong><br>
+        前端 · 后端 · 随笔<br><br>
+        <strong>标签</strong><br>
+        <span style="background:#eee;padding:1px 4px;border-radius:2px">Astro</span>
+        <span style="background:#eee;padding:1px 4px;border-radius:2px">Python</span>
+      </div>
+      <div class="mock-content" style="width:70%">
+        <div style="padding:8px 0;border-bottom:1px solid #f0f0f0">
+          <div style="font-weight:600">文章标题一</div>
+          <div style="font-size:11px;color:#999">2026-05-01 · 5 min</div>
+        </div>
+        <div style="padding:8px 0;border-bottom:1px solid #f0f0f0">
+          <div style="font-weight:600">文章标题二</div>
+          <div style="font-size:11px;color:#999">2026-04-28 · 3 min</div>
+        </div>
+        <div style="padding:8px 0">
+          <div style="font-weight:600">文章标题三</div>
+          <div style="font-size:11px;color:#999">2026-04-20 · 8 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px">变更清单</h3>
+
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+  <div style="flex:1;min-width:200px">
+    <div class="label" style="color:#e74c3c">移除</div>
+    <ul style="font-size:13px;line-height:1.8">
+      <li>5 个页面（日记、相册、时间线、归档）</li>
+      <li>3 个自定义字体 → 系统默认字体</li>
+      <li>Swup 页面过渡动画</li>
+      <li>所有入场/淡入动画</li>
+      <li>自定义滚动条（OverlayScrollbars）</li>
+      <li>侧边栏：公告、项目卡片、站点统计、日历</li>
+      <li>导航下拉菜单（改为平铺）</li>
+      <li>右侧边栏（TOC 保留为浮动按钮）</li>
+    </ul>
+  </div>
+  <div style="flex:1;min-width:200px">
+    <div class="label" style="color:#27ae60">保留</div>
+    <ul style="font-size:13px;line-height:1.8">
+      <li>5 个页面：文章、项目、关于、技能、友链</li>
+      <li>导航栏 5 项平铺 + 搜索 + 暗色切换</li>
+      <li>Banner 图片 + 波浪动画 + 打字机效果</li>
+      <li>左侧边栏：个人简介、分类、标签云</li>
+      <li>暗色/亮色主题切换</li>
+      <li>Pagefind 全文搜索</li>
+      <li>RSS/Atom 订阅、Sitemap</li>
+      <li>Markdown 渲染（代码高亮、KaTeX、Mermaid）</li>
+    </ul>
+  </div>
+</div>
