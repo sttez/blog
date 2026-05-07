@@ -1,0 +1,125 @@
+---
+import type { GetStaticPaths } from "astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPosts } from "@utils/content-utils";
+import { projectsData } from "../../data/projects";
+
+export const getStaticPaths = (async () => {
+	const allPosts = await getSortedPosts();
+
+	// 统计每篇文章的项目
+	const postsByProject: Record<string, typeof allPosts> = {};
+	for (const post of allPosts) {
+		const proj = (post.data as any).project || "";
+		if (proj) {
+			if (!postsByProject[proj]) postsByProject[proj] = [];
+			postsByProject[proj].push(post);
+		}
+	}
+
+	const paths: any[] = [];
+
+	// 为 projectsData 中有文章的项目生成路径
+	for (const project of projectsData) {
+		const projPosts = postsByProject[project.title];
+		if (projPosts && projPosts.length > 0) {
+			paths.push({
+				params: { id: project.id },
+				props: { projectTitle: project.title, posts: projPosts },
+			});
+		}
+	}
+
+	// 为不在 projectsData 中但有文章的项目生成路径
+	for (const [projName, projPosts] of Object.entries(postsByProject)) {
+		if (!projectsData.some((p) => p.title === projName)) {
+			paths.push({
+				params: { id: projName },
+				props: { projectTitle: projName, posts: projPosts },
+			});
+		}
+	}
+
+	return paths;
+}) satisfies GetStaticPaths;
+
+const { projectTitle, posts } = Astro.props;
+
+// 按日期倒序
+const sortedPosts = [...posts].sort(
+	(a, b) => new Date(b.data.published).getTime() - new Date(a.data.published).getTime(),
+);
+
+function formatDate(date: Date) {
+	const y = date.getFullYear();
+	const m = (date.getMonth() + 1).toString().padStart(2, "0");
+	const d = date.getDate().toString().padStart(2, "0");
+	return `${y}-${m}-${d}`;
+}
+---
+
+<MainGridLayout title={`${projectTitle} - 项目文章`}>
+  <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4">
+    <div class="card-base z-10 px-8 py-6 relative w-full">
+      <!-- 页面标题 -->
+      <div class="flex flex-col items-start justify-center mb-6">
+        <a href="/projects/" class="text-sm text-black/50 dark:text-white/50 hover:text-[var(--primary)] transition-colors mb-2">
+          &larr; 返回项目列表
+        </a>
+        <h1 class="text-3xl font-bold text-black/90 dark:text-white/90 mb-1 relative
+                  before:w-1 before:h-7 before:rounded-md before:bg-[var(--primary)]
+                  before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
+          {projectTitle}
+        </h1>
+        <p class="text-sm text-black/50 dark:text-white/50">
+          {sortedPosts.length} 篇文章
+        </p>
+      </div>
+
+      <!-- 文章列表 -->
+      {sortedPosts.map((post) => (
+        <a
+          href={`/posts/${post.id.replace(/\.md$/, '')}/`}
+          aria-label={post.data.title}
+          class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
+        >
+          <div class="flex flex-row justify-start items-center h-full">
+            <!-- date -->
+            <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
+              {formatDate(post.data.published)}
+            </div>
+
+            <!-- dot and line -->
+            <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
+              <div
+                class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5
+                       bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-[var(--primary)]
+                       outline outline-4 z-50
+                       outline-[var(--card-bg)]
+                       group-hover:outline-[var(--btn-plain-bg-hover)]
+                       group-active:outline-[var(--btn-plain-bg-active)]"
+              ></div>
+            </div>
+
+            <!-- post title -->
+            <div
+              class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
+                     group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
+                     text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
+            >
+              {post.data.title}
+            </div>
+
+            <!-- tag list -->
+            <div
+              class="hidden md:block md:w-[15%] text-left text-sm transition
+                     whitespace-nowrap overflow-ellipsis overflow-hidden text-30"
+            >
+              {post.data.tags.map((t) => `#${t}`).join(" ")}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</MainGridLayout>

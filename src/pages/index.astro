@@ -16,8 +16,11 @@ if (!latestPost) {
     return Astro.redirect("/404/");
 }
 
-const { Content, headings } = await render(latestPost);
-const { remarkPluginFrontmatter } = await render(latestPost);
+const rendered = await render(latestPost);
+const Content = rendered.Content;
+const headings = rendered.headings;
+const words = rendered.remarkPluginFrontmatter.words;
+const minutes = rendered.remarkPluginFrontmatter.minutes;
 ---
 
 <MainGridLayout headings={headings}>
@@ -29,13 +32,13 @@ const { remarkPluginFrontmatter } = await render(latestPost);
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
                         <Icon name="material-symbols:notes-rounded" />
                     </div>
-                    <div class="text-sm">{remarkPluginFrontmatter.words} 字</div>
+                    <div class="text-sm">{words} 字</div>
                 </div>
                 <div class="flex flex-row items-center">
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
                         <Icon name="material-symbols:schedule-outline-rounded" />
                     </div>
-                    <div class="text-sm">{remarkPluginFrontmatter.minutes} 分钟</div>
+                    <div class="text-sm">{minutes} 分钟</div>
                 </div>
             </div>
 
