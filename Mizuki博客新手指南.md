@@ -220,7 +220,121 @@ draft: false
 
 > **提示：** `project` 字段用于将文章归类到某个项目下。值必须和 `src/data/projects.ts` 中对应项目的 `title` 完全一致。填写后，该项目的详情页会自动收录这篇文章。
 
+### 写作规范与示例
+
+**分类必须是以下三个之一：** `技术`、`指南`、`踩坑`
+
+- **技术** — 技术原理、源码分析、架构设计
+- **指南** — 使用教程、操作步骤、入门教学
+- **踩坑** — 问题排查、报错修复、经验总结
+
+**标签用具体词，3-5 个为宜：**
+
+```yaml
+# 好的标签
+tags: [React, Hooks, 前端]
+tags: [Docker, 部署, Linux]
+
+# 不好的标签（太宽泛）
+tags: [技术, 编程, 学习]
+```
+
+#### 示例一：技术文章
+
+```yaml
+---
+title: React Server Components 工作原理
+published: 2026-05-07
+description: 深入分析 RSC 的渲染机制和数据流
+category: 技术
+tags: [React, RSC, 前端, 源码分析]
+project: My App
+draft: false
+---
+
+React Server Components（RSC）是 React 18 引入的新架构...
+
+## 核心概念
+
+RSC 将组件分为两类...
+
+## 渲染流程
+
+​```mermaid
+graph LR
+    A[请求] --> B[服务端渲染]
+    B --> C[流式传输]
+    C --> D[客户端hydration]
+​```
+```
+
+#### 示例二：踩坑文章
+
+```yaml
+---
+title: Docker 容器内连接数据库超时
+published: 2026-05-06
+description: 解决 Docker 容器中 MySQL 连接超时的排查过程
+category: 踩坑
+tags: [Docker, MySQL, 网络, 排错]
+draft: false
+---
+
+## 问题现象
+
+部署后服务报错：`Connection timed out`
+
+> [!WARNING]
+> 不要在生产环境直接调试，先在本地复现。
+
+## 排查过程
+
+1. 检查容器网络：`docker network inspect xxx`
+2. 发现容器使用了错误的网络驱动
+
+## 解决方案
+
+​```yaml
+# docker-compose.yml
+services:
+  db:
+    networks:
+      - backend
+​```
+```
+
+#### 示例三：指南文章
+
+```yaml
+---
+title: 从零搭建 Vite + Vue3 项目
+published: 2026-05-05
+description: 手把手教你用 Vite 创建 Vue3 项目并配置常用插件
+category: 指南
+tags: [Vite, Vue3, 前端, 教程]
+draft: false
+---
+
+## 第一步：创建项目
+
+​```bash
+npm create vite@latest my-app -- --template vue
+​```
+
+## 第二步：安装依赖
+
+​```bash
+cd my-app
+npm install
+​```
+
+> [!TIP]
+> 推荐使用 pnpm 代替 npm，速度更快。
+```
+
 保存文件后，刷新浏览器就能在首页看到你的文章了。
+
+> **参考示例文章：** 项目自带了几篇示例文章，位于 `src/content/posts/` 下，包括 Markdown 教程、扩展语法演示、视频嵌入等，可以在本地开发时查看效果。正式发布前建议删除或改为草稿。
 
 ---
 
