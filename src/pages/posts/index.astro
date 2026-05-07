@@ -9,6 +9,7 @@ const categories = ["技术", "踩坑", "指南"];
 ---
 
 <MainGridLayout>
+
     <div class="mb-4 flex flex-wrap justify-between items-center gap-2">
         <!-- 左侧：分类筛选按钮 -->
         <div class="flex gap-2 flex-wrap">
@@ -33,7 +34,6 @@ const categories = ["技术", "踩坑", "指南"];
             <button
                 id="view-archive"
                 class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
-                style="background: var(--primary); color: white;"
             >
                 归档视图
             </button>
@@ -55,80 +55,128 @@ const categories = ["技术", "踩坑", "指南"];
         />
     </div>
 
-    <div id="list-view" class="hidden">
+    <div id="list-view">
         <div class="flex flex-col gap-4">
             {allPosts.map((entry, index) => (
-                <PostCard
-                    entry={entry}
-                    style={`animation-delay: ${index * 50}ms;`}
-                />
+                <div
+                    class="list-post-card"
+                    data-category={entry.data.category || ""}
+                    data-tags={(entry.data.tags || []).join(",")}
+                    data-project={(entry.data as any).project || ""}
+                >
+                    <PostCard
+                        entry={entry}
+                        style={`animation-delay: ${index * 50}ms;`}
+                    />
+                </div>
             ))}
         </div>
     </div>
 </MainGridLayout>
 
-<script>
+<script is:inline>
+(function() {
     const archiveBtn = document.getElementById("view-archive");
     const listBtn = document.getElementById("view-list");
     const archiveView = document.getElementById("archive-view");
     const listView = document.getElementById("list-view");
 
+    if (!archiveBtn || !listBtn || !archiveView || !listView) return;
+
+    const ACTIVE = "background: var(--primary); color: white;";
+    const INACTIVE = "background: transparent; color: inherit;";
+    const savedMode = localStorage.getItem("postsViewMode") || "archive";
+
+    // 初始化视图显示和按钮状态
+    function initView() {
+        if (savedMode === "list") {
+            archiveView.style.display = "none";
+            listView.style.display = "block";
+            listBtn.setAttribute("style", ACTIVE);
+            archiveBtn.setAttribute("style", INACTIVE);
+            filterListView();
+        } else {
+            archiveView.style.display = "block";
+            listView.style.display = "none";
+            archiveBtn.setAttribute("style", ACTIVE);
+            listBtn.setAttribute("style", INACTIVE);
+        }
+    }
+
+    // 切换到归档视图
     function showArchive() {
-        archiveView?.classList.remove("hidden");
-        listView?.classList.add("hidden");
-        archiveBtn?.setAttribute("style", "background: var(--primary); color: white;");
-        listBtn?.removeAttribute("style");
+        archiveView.style.display = "block";
+        listView.style.display = "none";
+        archiveBtn.setAttribute("style", ACTIVE);
+        listBtn.setAttribute("style", INACTIVE);
         localStorage.setItem("postsViewMode", "archive");
     }
 
+    // 切换到列表视图
     function showList() {
-        archiveView?.classList.add("hidden");
-        listView?.classList.remove("hidden");
-        listBtn?.setAttribute("style", "background: var(--primary); color: white;");
-        archiveBtn?.removeAttribute("style");
+        archiveView.style.display = "none";
+        listView.style.display = "block";
+        listBtn.setAttribute("style", ACTIVE);
+        archiveBtn.setAttribute("style", INACTIVE);
         localStorage.setItem("postsViewMode", "list");
+        filterListView();
     }
 
-    archiveBtn?.addEventListener("click", showArchive);
-    listBtn?.addEventListener("click", showList);
+    archiveBtn.addEventListener("click", showArchive);
+    listBtn.addEventListener("click", showList);
 
-    // Restore saved view mode
-    const savedMode = localStorage.getItem("postsViewMode");
-    if (savedMode === "list") {
-        showList();
-    }
-
-    // 分类筛选按钮逻辑
+    // 分类按钮高亮和点击
     const categoryBtns = document.querySelectorAll('.category-btn');
     const btnAll = document.getElementById('btn-all');
     const params = new URLSearchParams(window.location.search);
     const activeCategory = params.get('category');
     const activeTag = params.get('tag');
     const activeProject = params.get('project');
-
     const hasFilter = activeCategory || activeTag || activeProject;
 
-    // 高亮当前激活的分类按钮
     if (hasFilter) {
-        // 有筛选时，"全部"不高亮
-        btnAll?.removeAttribute('style');
+        btnAll?.setAttribute("style", INACTIVE);
+    } else {
+        btnAll?.setAttribute("style", ACTIVE);
     }
 
-    categoryBtns.forEach(btn => {
-        const cat = btn.getAttribute('data-category');
+    categoryBtns.forEach(function(btn) {
+        var cat = btn.getAttribute('data-category');
         if (cat === activeCategory) {
-            btn.setAttribute('style', 'background: var(--primary); color: white;');
-            // 有分类筛选时"全部"不高亮
-            btnAll?.removeAttribute('style');
+            btn.setAttribute('style', ACTIVE);
+            btnAll?.setAttribute("style", INACTIVE);
+        } else {
+            btn.setAttribute('style', INACTIVE);
         }
-
-        btn.addEventListener('click', () => {
-            window.location.href = '/posts/?category=' + encodeURIComponent(cat!);
+        btn.addEventListener('click', function() {
+            window.location.href = '/posts/?category=' + encodeURIComponent(cat);
         });
     });
 
-    // "全部"按钮：清除所有筛选
-    btnAll?.addEventListener('click', () => {
+    btnAll?.addEventListener('click', function() {
         window.location.href = '/posts/';
     });
+
+    // 列表视图筛选
+    function filterListView() {
+        var cards = document.querySelectorAll('.list-post-card');
+        var p = new URLSearchParams(window.location.search);
+        var cat = p.get('category');
+        var tag = p.get('tag');
+        var proj = p.get('project');
+        cards.forEach(function(card) {
+            var el = card;
+            var show = true;
+            if (cat && el.dataset.category !== cat) show = false;
+            if (tag) {
+                var tags = (el.dataset.tags || '').split(',');
+                if (!tags.includes(tag)) show = false;
+            }
+            if (proj && el.dataset.project !== proj) show = false;
+            el.style.display = show ? '' : 'none';
+        });
+    }
+
+    initView();
+})();
 </script>

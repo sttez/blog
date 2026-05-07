@@ -24,7 +24,11 @@
   - [1. Markdown 扩展语法](#1-markdown-扩展语法)
   - [2. 添加图片和视频](#2-添加图片和视频)
   - [3. 文章管理技巧](#3-文章管理技巧)
-  - [4. 特色页面数据](#4-特色页面数据)
+  - [4. 添加项目](#4-添加项目)
+  - [5. 修改技能页](#5-修改技能页)
+  - [6. 修改关于页面](#6-修改关于页面)
+  - [7. 修改个人简介](#7-修改个人简介)
+  - [8. 页面调整总览](#8-页面调整总览)
 - [第四部分：部署上线](#第四部分部署上线)
   - [1. Vercel 部署](#1-vercel-部署)
   - [2. Netlify 部署](#2-netlify-部署)
@@ -95,7 +99,7 @@ pnpm install
 pnpm dev
 ```
 
-启动成功后，打开浏览器访问 `http://localhost:4321`，就能看到你的博客了。
+启动成功后，打开浏览器访问 `<!-- http://localhost:4321 -->`，就能看到你的博客了。
 
 > **提示：** 开发模式下修改文件会自动刷新页面，所见即所得。
 
@@ -133,6 +137,9 @@ Mizuki/
 | 改网站标题、颜色、头像 | `src/config.ts` |
 | 写新文章 | `src/content/posts/` |
 | 改"关于"页面 | `src/content/spec/about.md` |
+| 添加项目 | `src/data/projects.ts` |
+| 修改技能 | `src/data/skills.ts` |
+| 改个人简介 | `src/config.ts` 中的 `profileConfig` |
 | 改横幅图片 | `public/assets/desktop-banner/` 和 `mobile-banner/` |
 | 放文章里的图片 | `public/images/` |
 | 改友链数据 | `src/data/friends.ts` |
@@ -186,11 +193,32 @@ draft: false
 | `title` | 是 | 文章标题 | `我的第一篇文章` |
 | `published` | 是 | 发布日期（YYYY-MM-DD） | `2026-05-07` |
 | `description` | 建议 | 文章描述，用于 SEO | `这是一篇关于...` |
-| `tags` | 否 | 标签列表 | `[技术, 教程]` |
-| `category` | 否 | 分类 | `技术` |
+| `category` | 是 | 分类（固定值：技术、指南、踩坑） | `技术` |
+| `tags` | 是 | 标签列表 | `[JavaScript, 教程]` |
+| `project` | 否 | 所属项目（对应项目数据中的 title） | `Mizuki Blog Theme` |
 | `image` | 否 | 封面图片 | `./cover.webp` |
 | `draft` | 否 | 是否为草稿（默认 false） | `true` |
 | `pinned` | 否 | 是否置顶（默认 false） | `true` |
+
+### 完整示例
+
+```yaml
+---
+title: 使用 Astro 搭建个人博客
+published: 2026-05-07
+description: 记录用 Astro 框架搭建 Mizuki 博客的完整过程
+category: 技术
+tags: [Astro, 博客, 前端]
+project: Mizuki Blog Theme
+draft: false
+---
+
+# 文章正文
+
+在这里写你的文章内容...
+```
+
+> **提示：** `project` 字段用于将文章归类到某个项目下。值必须和 `src/data/projects.ts` 中对应项目的 `title` 完全一致。填写后，该项目的详情页会自动收录这篇文章。
 
 保存文件后，刷新浏览器就能在首页看到你的文章了。
 
@@ -216,21 +244,21 @@ export const siteConfig: SiteConfig = {
 
 ```typescript
 export const profileConfig: ProfileConfig = {
-    avatar: "assets/images/avatar.webp",  // 头像路径
-    name: "zhang-h-h",                     // ← 改成你的昵称
-    bio: "The world is big, you have to go and see",  // ← 个人简介
+    avatar: "assets/images/avatar.webp",  // 头像（图片放 src/assets/images/ 下）
+    name: "你的昵称",                      // ← 改成你的昵称
+    bio: "一句话介绍自己",                  // ← 个人简介
     links: [
-        // ← 社交链接，按需修改
-        {
-            name: "GitHub",
-            icon: "fa6-brands:github",
-            url: "https://github.com/你的用户名",
-        },
+        { name: "Bilibili", icon: "fa6-brands:bilibili", url: "https://bilibili.com" },
+        { name: "GitHub", icon: "fa6-brands:github", url: "https://github.com/你的用户名" },
     ],
+    donationImage: "/images/donate.webp",  // 赞赏码图片（可选）
+    donationTitle: "赏个鸡腿",
 };
 ```
 
-**头像图片：** 把你的头像放到 `public/assets/images/` 目录下，然后修改 `avatar` 的路径。
+**头像图片：** 把头像放到 `src/assets/images/` 目录下。
+**赞赏码：** 把图片放到 `public/images/` 下，不需要可以删掉 `donationImage` 那行。
+**社交图标：** 在 `links` 里增减，图标去 https://iconify.design/ 搜。
 
 ---
 
@@ -697,56 +725,255 @@ tags: [JavaScript, 前端, 教程]
 
 ---
 
-## 4. 特色页面数据
+## 4. 添加项目
 
-### 友链页面
-
-编辑 `src/data/friends.ts`：
+编辑 `src/data/projects.ts`，在 `projectsData` 数组中添加一个新对象：
 
 ```typescript
-export const friendsData: FriendItem[] = [
-    {
-        id: 1,
-        title: "朋友的博客",           // 网站名称
-        imgurl: "https://example.com/avatar.jpg",  // 头像 URL
-        desc: "一个有趣的博客",         // 简介
-        siteurl: "https://example.com", // 网站地址
-        tags: ["技术", "前端"],         // 标签
-    },
-    // ... 添加更多友链
-];
+{
+    id: "my-project",                    // 唯一标识，用英文连字符
+    title: "我的项目",                    // 项目名称（文章关联时要和 project 字段一致）
+    description: "这是一个很棒的项目",     // 项目简介
+    image: "",                           // 项目图片路径，放 public/images/ 下
+    category: "web",                     // 分类：web / mobile / desktop / other
+    techStack: ["React", "TypeScript"],  // 技术栈列表
+    status: "in-progress",              // 状态：completed / in-progress / planned
+    liveDemo: "https://example.com",     // 在线演示地址（可选）
+    sourceCode: "https://github.com/xxx", // 源码地址（可选）
+    visitUrl: "https://example.com",     // 访问链接（可选）
+    startDate: "2024-01-01",            // 开始日期
+    endDate: "2024-06-01",              // 结束日期（进行中的项目可不填）
+    featured: true,                     // 是否在首页精选展示（可选）
+    tags: ["前端", "开源"],              // 标签（可选）
+},
 ```
 
-### 日记页面
+### 关联文章到项目
 
-编辑 `src/data/diary.ts`：
+1. 在 `src/data/projects.ts` 中记下项目的 `title` 值
+2. 在文章的 Frontmatter 中添加 `project` 字段，值必须和 `title` 完全一致：
+
+```yaml
+---
+title: 我的项目开发记录
+project: 我的项目
+category: 技术
+tags: [React, TypeScript]
+---
+```
+
+3. 项目详情页会自动按分类（技术、指南、踩坑）展示关联的文章
+
+---
+
+## 5. 修改技能页
+
+编辑 `src/data/skills.ts`，在 `skillsData` 数组中添加或修改技能项：
 
 ```typescript
-const diaryData: DiaryItem[] = [
-    {
-        id: 1,
-        content: "今天天气真好！",         // 日记内容
-        date: "2026-05-07T10:30:00Z",    // 日期时间
-        images: ["/images/diary/1.jpg"],  // 可选：图片
-        location: "北京",                 // 可选：地点
-        mood: "开心",                     // 可选：心情
-    },
-];
+{
+    id: "react",                         // 唯一标识
+    name: "React",                       // 技能名称
+    description: "前端 UI 开发框架",       // 简介
+    icon: "logos:react",                 // Iconify 图标名称
+    category: "frontend",                // 分类：frontend / backend / database / tools / other
+    level: "advanced",                   // 水平：beginner / intermediate / advanced / expert
+    experience: { years: 2, months: 6 }, // 经验时长
+    projects: ["mizuki-blog"],           // 关联的项目 ID（可选）
+    color: "#61DAFB",                    // 卡片主题色（可选）
+},
 ```
 
-### 关于页面
+### 图标怎么选
 
-编辑 `src/content/spec/about.md`，直接写 Markdown 内容即可。
+访问 https://iconify.design/ 搜索图标，复制名称（如 `logos:react`、`logos:python`、`skill-icons:git`）填入 `icon` 字段。
 
-### 其他数据文件
+### 技能分类
 
-| 页面 | 数据文件 |
-|------|---------|
-| 项目展示 | `src/data/projects.ts` |
-| 技能展示 | `src/data/skills.ts` |
-| 时间线 | `src/data/timeline.ts` |
-| 相册 | `src/data/albums.ts` |
-| 设备展示 | `src/data/devices.ts` |
+| category | 说明 |
+|----------|------|
+| `frontend` | 前端技术 |
+| `backend` | 后端技术 |
+| `database` | 数据库 |
+| `tools` | 开发工具 |
+| `other` | 其他 |
+
+---
+
+## 6. 修改关于页面
+
+编辑 `src/content/spec/about.md`，直接写 Markdown 内容即可：
+
+```markdown
+# 关于我
+
+你好，我是 xxx，一名热爱技术的开发者。
+
+## 我的技能
+
+- 前端开发：React、Vue、TypeScript
+- 后端开发：Node.js、Python
+
+## 联系方式
+
+- GitHub: https://github.com/xxx
+- Email: xxx@example.com
+```
+
+保存后刷新浏览器即可看到更新。
+
+---
+
+## 7. 修改个人简介
+
+编辑 `src/config.ts` 中的 `profileConfig`：
+
+```typescript
+export const profileConfig: ProfileConfig = {
+    avatar: "assets/images/avatar.webp",  // 头像（图片放 src/assets/images/ 下）
+    name: "你的昵称",                      // 显示名称
+    bio: "一句话介绍自己",                  // 个人简介
+    typewriter: {
+        enable: true,                      // 打字机效果
+        speed: 80,                         // 打字速度（毫秒）
+    },
+    links: [
+        {
+            name: "Bilibili",
+            icon: "fa6-brands:bilibili",    // B站图标
+            url: "https://space.bilibili.com/你的UID",
+        },
+        {
+            name: "GitHub",
+            icon: "fa6-brands:github",
+            url: "https://github.com/你的用户名",
+        },
+        {
+            name: "Email",
+            icon: "material-symbols:mail",
+            url: "mailto:你的邮箱@example.com",
+        },
+    ],
+    donationImage: "/images/donate.webp",  // 赞赏码（图片放 public/images/ 下）
+    donationTitle: "赏个鸡腿",              // 点击赞赏图标后显示的标题
+};
+```
+
+### 各字段说明
+
+| 字段 | 说明 |
+|------|------|
+| `avatar` | 头像图片，放 `src/assets/images/` 下 |
+| `name` | 侧边栏显示的名字 |
+| `bio` | 一句话简介，支持打字机效果 |
+| `links` | 社交链接图标，点击跳转 |
+| `donationImage` | 赞赏码图片路径，放 `public/images/` 下，不想要可以删掉这行 |
+| `donationTitle` | 点击赞赏图标弹窗里显示的标题 |
+
+### 怎么加减社交图标？
+
+在 `links` 数组里增减对象即可。图标名称去 https://iconify.design/ 搜索复制。
+
+### 怎么关闭赞赏码？
+
+删掉 `donationImage` 和 `donationTitle` 两行，或者把 `donationImage` 改为空字符串 `""`。
+
+---
+
+## 8. 页面调整总览
+
+博客有很多页面，你可以按需开关和调整。
+
+### 开关页面
+
+编辑 `src/config.ts` 中的 `featurePages`：
+
+```typescript
+featurePages: {
+    anime: false,     // 番剧页面  ← true 开启，false 关闭
+    diary: true,      // 日记页面
+    friends: true,    // 友链页面
+    projects: true,   // 项目页面
+    skills: true,     // 技能页面
+    timeline: true,   // 时间线页面
+    albums: true,     // 相册页面
+    devices: false,   // 设备页面
+},
+```
+
+把不需要的页面改成 `false` 即可。
+
+### 关闭页面后还要做什么？
+
+1. 把上面的值改为 `false`
+2. 在导航栏配置中删除对应的菜单链接（见下面）
+
+### 调整导航栏菜单
+
+编辑 `src/config.ts` 中的 `navBarConfig`：
+
+```typescript
+export const navBarConfig: NavBarConfig = {
+    links: [
+        LinkPreset.Home,     // 首页（内置，保留）
+        LinkPreset.Archive,  // 归档（内置，保留）
+
+        // 自定义菜单：按需增减
+        {
+            name: "项目",
+            url: "/projects/",
+            icon: "material-symbols:work",
+        },
+        {
+            name: "技能",
+            url: "/skills/",
+            icon: "material-symbols:code",
+        },
+        {
+            name: "友链",
+            url: "/links/",
+            icon: "material-symbols:link",
+        },
+        // 想加子菜单？用 children：
+        {
+            name: "我的",
+            url: "/content/",
+            icon: "material-symbols:person",
+            children: [
+                {
+                    name: "记录",
+                    url: "/diary/",
+                    icon: "material-symbols:book",
+                },
+                {
+                    name: "相册",
+                    url: "/albums/",
+                    icon: "material-symbols:photo-library",
+                },
+            ],
+        },
+    ],
+};
+```
+
+**增减菜单：** 在 `links` 数组里增减对象。
+**外部链接：** 加 `external: true`，如 `{ name: "GitHub", url: "https://github.com/xxx", external: true, icon: "fa6-brands:github" }`。
+
+### 图标从哪里找？
+
+去 https://iconify.design/ 搜索，复制图标名称填入 `icon` 字段。
+
+---
+
+### 其他数据文件一览
+
+| 页面 | 数据文件 | 说明 |
+|------|---------|------|
+| 友链 | `src/data/friends.ts` | 添加友情链接 |
+| 日记 | `src/data/diary.ts` | 写日记条目 |
+| 时间线 | `src/data/timeline.ts` | 个人经历时间线 |
+| 相册 | `src/data/albums.ts` | 照片相册 |
+| 设备 | `src/data/devices.ts` | 设备展示 |
 
 每个文件都有 TypeScript 接口定义字段，照着已有的数据格式添加即可。
 
@@ -869,4 +1096,4 @@ font: {
 
 ---
 
-> 本指南基于 Mizuki v7.6.5 编写。如有问题，请参考项目 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)。
+> 本指南基于 Mizuki v7.6.5 编写，已适配项目分类、技能展示等功能。如有问题，请参考项目 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)。

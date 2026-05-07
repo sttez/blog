@@ -45,10 +45,27 @@ export const getStaticPaths = (async () => {
 
 const { projectTitle, posts } = Astro.props;
 
-// 按日期倒序
-const sortedPosts = [...posts].sort(
-	(a, b) => new Date(b.data.published).getTime() - new Date(a.data.published).getTime(),
-);
+// 按分类分组
+const categoryOrder = ["技术", "指南", "踩坑"];
+const grouped: Record<string, typeof posts> = {};
+for (const post of posts) {
+	const cat = (post.data as any).category || "未分类";
+	if (!grouped[cat]) grouped[cat] = [];
+	grouped[cat].push(post);
+}
+
+// 按指定分类顺序排列，未在列表中的分类排最后
+const sortedCategories = [
+	...categoryOrder.filter((c) => grouped[c]),
+	...Object.keys(grouped).filter((c) => !categoryOrder.includes(c)),
+];
+
+// 每组内按日期倒序
+for (const cat of sortedCategories) {
+	grouped[cat].sort(
+		(a, b) => new Date(b.data.published).getTime() - new Date(a.data.published).getTime(),
+	);
+}
 
 function formatDate(date: Date) {
 	const y = date.getFullYear();
@@ -72,53 +89,65 @@ function formatDate(date: Date) {
           {projectTitle}
         </h1>
         <p class="text-sm text-black/50 dark:text-white/50">
-          {sortedPosts.length} 篇文章
+          {posts.length} 篇文章
         </p>
       </div>
 
-      <!-- 文章列表 -->
-      {sortedPosts.map((post) => (
-        <a
-          href={`/posts/${post.id.replace(/\.md$/, '')}/`}
-          aria-label={post.data.title}
-          class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
-        >
-          <div class="flex flex-row justify-start items-center h-full">
-            <!-- date -->
-            <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
-              {formatDate(post.data.published)}
-            </div>
-
-            <!-- dot and line -->
-            <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
-              <div
-                class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5
-                       bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-[var(--primary)]
-                       outline outline-4 z-50
-                       outline-[var(--card-bg)]
-                       group-hover:outline-[var(--btn-plain-bg-hover)]
-                       group-active:outline-[var(--btn-plain-bg-active)]"
-              ></div>
-            </div>
-
-            <!-- post title -->
-            <div
-              class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
-                     group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
-                     text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
+      <!-- 按分类展示文章 -->
+      {sortedCategories.map((cat) => (
+        <div class="mb-8 last:mb-0">
+          <h2 class="text-xl font-bold text-black/90 dark:text-white/90 mb-3 relative
+                    before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
+                    before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
+            {cat}
+            <span class="text-sm font-normal text-black/50 dark:text-white/50 ml-2">
+              {grouped[cat].length} 篇
+            </span>
+          </h2>
+          {grouped[cat].map((post) => (
+            <a
+              href={`/posts/${post.id.replace(/\.md$/, '')}/`}
+              aria-label={post.data.title}
+              class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
             >
-              {post.data.title}
-            </div>
+              <div class="flex flex-row justify-start items-center h-full">
+                <!-- date -->
+                <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
+                  {formatDate(post.data.published)}
+                </div>
 
-            <!-- tag list -->
-            <div
-              class="hidden md:block md:w-[15%] text-left text-sm transition
-                     whitespace-nowrap overflow-ellipsis overflow-hidden text-30"
-            >
-              {post.data.tags.map((t) => `#${t}`).join(" ")}
-            </div>
-          </div>
-        </a>
+                <!-- dot and line -->
+                <div class="w-[15%] md:w-[10%] relative dash-line h-full flex items-center">
+                  <div
+                    class="transition-all mx-auto w-1 h-1 rounded group-hover:h-5
+                           bg-[oklch(0.5_0.05_var(--hue))] group-hover:bg-[var(--primary)]
+                           outline outline-4 z-50
+                           outline-[var(--card-bg)]
+                           group-hover:outline-[var(--btn-plain-bg-hover)]
+                           group-active:outline-[var(--btn-plain-bg-active)]"
+                  ></div>
+                </div>
+
+                <!-- post title -->
+                <div
+                  class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
+                         group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
+                         text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
+                >
+                  {post.data.title}
+                </div>
+
+                <!-- tag list -->
+                <div
+                  class="hidden md:block md:w-[15%] text-left text-sm transition
+                         whitespace-nowrap overflow-ellipsis overflow-hidden text-30"
+                >
+                  {post.data.tags.map((t) => `#${t}`).join(" ")}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
       ))}
     </div>
   </div>

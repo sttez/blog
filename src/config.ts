@@ -269,26 +269,18 @@ export const profileConfig: ProfileConfig = {
 			url: "https://bilibili.com",
 		},
 		{
-			name: "Gitee",
-			icon: "mdi:git",
-			url: "https://gitee.com",
-		},
-		{
 			name: "GitHub",
 			icon: "fa6-brands:github",
 			url: "https://github.com/sttez",
 		},
 		{
-			name: "Codeberg",
-			icon: "simple-icons:codeberg",
-			url: "https://codeberg.org",
-		},
-		{
-			name: "Discord",
-			icon: "fa6-brands:discord",
-			url: "https://discord.gg/",
+			name: "Email",
+			icon: "material-symbols:mail",
+			url: "mailto:your@email.com",
 		},
 	],
+	donationImage: "/images/donate.webp", // 赞赏码图片，放到 public/images/ 下
+	donationTitle: "赏个鸡腿", // 赞赏码标题
 };
 
 export const licenseConfig: LicenseConfig = {

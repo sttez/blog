@@ -92,6 +92,21 @@ export const projectsData: Project[] = [
 		startDate: "2024-07-01",
 		tags: ["E-commerce", "Full Stack", "Payment Integration"],
 	},
+	{
+		id: "mindhub",
+		title: "MindHub",
+		description:
+			"AI 驱动的知识工作台 Web 应用，帮助用户管理、分析和关联知识资源。核心功能包括资源管理、任务流编辑、知识图谱可视化和 AI 智能洞察。",
+		image: "",
+		category: "web",
+		techStack: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "@xyflow/react", "Cytoscape.js", "Supabase", "DeepSeek API"],
+		status: "in-progress",
+		sourceCode: "https://github.com/sttez/mindhub",
+		visitUrl: "https://mindhub.vercel.app/",
+		startDate: "2024-01-01",
+		featured: true,
+		tags: ["AI", "Knowledge Management", "Full Stack"],
+	},
 ];
 
 // Get project statistics
