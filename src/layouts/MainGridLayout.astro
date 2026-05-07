@@ -174,7 +174,7 @@ const sidebarClass = `
 // 桌面端：定位到网格第3列（右侧）
 // 如果默认是 grid 模式，初始就隐藏
 const rightSidebarClass = `
-	mb-4 col-span-1 onload-animation
+	mb-4 col-span-1 onload-animation self-start
 	${isBothSidebarMode && mobileShowSidebar ? "block row-start-3 row-end-4" : "hidden"}
 	${isBothSidebarMode ? "lg:block lg:row-start-1 lg:row-end-2 lg:max-w-[17.5rem] lg:col-start-3 lg:col-end-4" : "lg:hidden"}
 	${initialRightSidebarHidden ? "hidden-in-grid-mode" : ""}

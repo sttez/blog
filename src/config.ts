@@ -279,8 +279,8 @@ export const profileConfig: ProfileConfig = {
 			url: "mailto:your@email.com",
 		},
 	],
-	donationImage: "/images/donate.webp", // 赞赏码图片，放到 public/images/ 下
-	donationTitle: "赏个鸡腿", // 赞赏码标题
+	// donationImage: "/images/donate.webp", // 赞赏码图片，放到 public/images/ 下后取消注释
+	// donationTitle: "赏个鸡腿",
 };
 
 export const licenseConfig: LicenseConfig = {
