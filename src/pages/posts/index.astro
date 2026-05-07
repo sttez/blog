@@ -11,7 +11,14 @@ const categories = ["技术", "踩坑", "指南"];
 <MainGridLayout>
     <div class="mb-4 flex flex-wrap justify-between items-center gap-2">
         <!-- 左侧：分类筛选按钮 -->
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-wrap">
+            <button
+                id="btn-all"
+                class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+                style="background: var(--primary); color: white;"
+            >
+                全部
+            </button>
             {categories.map((cat) => (
                 <button
                     class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium category-btn"
@@ -93,26 +100,35 @@ const categories = ["技术", "踩坑", "指南"];
 
     // 分类筛选按钮逻辑
     const categoryBtns = document.querySelectorAll('.category-btn');
+    const btnAll = document.getElementById('btn-all');
     const params = new URLSearchParams(window.location.search);
     const activeCategory = params.get('category');
+    const activeTag = params.get('tag');
+    const activeProject = params.get('project');
+
+    const hasFilter = activeCategory || activeTag || activeProject;
 
     // 高亮当前激活的分类按钮
+    if (hasFilter) {
+        // 有筛选时，"全部"不高亮
+        btnAll?.removeAttribute('style');
+    }
+
     categoryBtns.forEach(btn => {
         const cat = btn.getAttribute('data-category');
         if (cat === activeCategory) {
             btn.setAttribute('style', 'background: var(--primary); color: white;');
+            // 有分类筛选时"全部"不高亮
+            btnAll?.removeAttribute('style');
         }
 
         btn.addEventListener('click', () => {
-            const currentParams = new URLSearchParams(window.location.search);
-            if (currentParams.get('category') === cat) {
-                // 再次点击取消筛选
-                currentParams.delete('category');
-            } else {
-                currentParams.set('category', cat!);
-            }
-            const qs = currentParams.toString();
-            window.location.href = '/posts/' + (qs ? '?' + qs : '');
+            window.location.href = '/posts/?category=' + encodeURIComponent(cat!);
         });
+    });
+
+    // "全部"按钮：清除所有筛选
+    btnAll?.addEventListener('click', () => {
+        window.location.href = '/posts/';
     });
 </script>

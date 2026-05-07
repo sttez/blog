@@ -11,32 +11,35 @@ import {
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../utils/content-utils";
+import { getPostUrl } from "../utils/url-utils";
 
-// import { loadIconify } from "../utils/icon-loader";
-
-// 检查项目页面是否启用
 if (!siteConfig.featurePages.projects) {
 	return Astro.redirect("/404/");
 }
 
-// const { lang } = Astro.props;
-
-// 加载Iconify图标库 - 移至客户端执行
-// loadIconify().catch((error) => {
-// 	console.error("Failed to load Iconify:", error);
-// });
-
-// 获取项目统计信息
 const stats = getProjectStats();
 const featuredProjects = getFeaturedProjects();
 const allTechStack = getAllTechStack();
 
-// 获取所有分类
+// 获取所有文章，按项目分组
+const allPosts = await getSortedPosts();
+const postsByProject: Record<string, typeof allPosts> = {};
+for (const post of allPosts) {
+	const proj = (post.data as any).project || "";
+	if (proj) {
+		if (!postsByProject[proj]) postsByProject[proj] = [];
+		postsByProject[proj].push(post);
+	}
+}
+
+// 合并静态项目和文章项目
+const articleProjectNames = Object.keys(postsByProject);
+
 const categories = [
 	...new Set(projectsData.map((project) => project.category)),
 ];
 
-// 按分类获取项目
 const projectsByCategory = categories.reduce(
 	(acc, category) => {
 		acc[category] = getProjectsByCategory(category);
@@ -48,32 +51,29 @@ const projectsByCategory = categories.reduce(
 const title = i18n(I18nKey.projects);
 const subtitle = i18n(I18nKey.projectsSubtitle);
 
-// 获取分类文本的国际化翻译
 const getCategoryText = (category: string) => {
 	switch (category) {
-		case "web":
-			return i18n(I18nKey.projectsWeb);
-		case "mobile":
-			return i18n(I18nKey.projectsMobile);
-		case "desktop":
-			return i18n(I18nKey.projectsDesktop);
-		case "other":
-			return i18n(I18nKey.projectsOther);
-		case UNCATEGORIZED:
-			return i18n(I18nKey.uncategorized);
-		default:
-			return category;
+		case "web": return i18n(I18nKey.projectsWeb);
+		case "mobile": return i18n(I18nKey.projectsMobile);
+		case "desktop": return i18n(I18nKey.projectsDesktop);
+		case "other": return i18n(I18nKey.projectsOther);
+		case UNCATEGORIZED: return i18n(I18nKey.uncategorized);
+		default: return category;
 	}
 };
+
+function formatDate(date: Date) {
+	const y = date.getFullYear();
+	const m = (date.getMonth() + 1).toString().padStart(2, "0");
+	const d = date.getDate().toString().padStart(2, "0");
+	return `${y}-${m}-${d}`;
+}
 ---
 
 <MainGridLayout title={title} description={subtitle}>
-  <!-- 引入右侧边栏布局管理器 -->
   <script>
     import('../scripts/right-sidebar-layout.js');
     import { loadIconify } from "../utils/icon-loader";
-    
-    // 加载Iconify图标库
     loadIconify().catch((error) => {
       console.error("Failed to load Iconify:", error);
     });
@@ -90,217 +90,152 @@ const getCategoryText = (category: string) => {
         <p class="text-lg text-black/60 dark:text-white/60">
           {i18n(I18nKey.projectsSubtitle)}
         </p>
-        <a href="/posts/?view=project"
-           class="mt-3 btn-regular px-4 py-2 rounded-lg text-sm font-medium"
-           style="background: var(--primary); color: white;">
-          查看项目文章
-        </a>
       </div>
-
-      <!-- 统计信息 -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div class="bg-blue-500/10 dark:bg-blue-900/30 rounded-lg p-4 border border-blue-500/20 dark:border-blue-900/30 hover:shadow-lg transition-shadow duration-300">
-          <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.total}</div>
-          <div class="text-sm text-blue-600/70 dark:text-blue-400/70">{i18n(I18nKey.projectsTotal)}</div>
-        </div>
-        <div class="bg-green-500/10 dark:bg-green-900/30 rounded-lg p-4 border border-green-500/20 dark:border-green-900/30 hover:shadow-lg transition-shadow duration-300">
-          <div class="text-2xl font-bold text-green-600 dark:text-green-400">{stats.byStatus.completed}</div>
-          <div class="text-sm text-green-600/70 dark:text-green-400/70">{i18n(I18nKey.projectsCompleted)}</div>
-        </div>
-        <div class="bg-yellow-500/10 dark:bg-yellow-900/30 rounded-lg p-4 border border-yellow-500/20 dark:border-yellow-900/30 hover:shadow-lg transition-shadow duration-300">
-          <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.byStatus.inProgress}</div>
-          <div class="text-sm text-yellow-600/70 dark:text-yellow-400/70">{i18n(I18nKey.projectsInProgress)}</div>
-        </div>
-        <div class="bg-purple-500/10 dark:bg-purple-900/30 rounded-lg p-4 border border-purple-500/20 dark:border-purple-900/30 hover:shadow-lg transition-shadow duration-300">
-          <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{allTechStack.length}</div>
-          <div class="text-sm text-purple-600/70 dark:text-purple-400/70">{i18n(I18nKey.projectsTechStack)}</div>
-        </div>
-      </div>
-
-      <!-- 特色项目 -->
-      {featuredProjects.length > 0 && (
-        <div class="mb-8">
-          <h2 id="projects-featured" class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4 relative
-                    before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
-                    before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
-            {i18n(I18nKey.projectsFeatured)}
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredProjects.map((project) => (
-              <div class="bg-transparent rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                {project.image && (
-                  <div class="aspect-video overflow-hidden">
-                    <img 
-                      src={project.image} 
-                      alt={project.title}
-                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
-                <div class="p-6">
-                  <div class="flex items-start justify-between mb-3">
-                    <h3 class="text-xl font-semibold text-black/90 dark:text-white/90">
-                      {project.title}
-                    </h3>
-                    <span class={`px-2 py-1 text-xs rounded-full ${
-                      project.status === 'completed' 
-                        ? 'bg-green-600/20 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                        : project.status === 'in-progress'
-                        ? 'bg-yellow-600/20 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                        : 'bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
-                    }`}>
-                      {i18n(project.status === 'completed' ? I18nKey.projectsCompleted : 
-                            project.status === 'in-progress' ? I18nKey.projectsInProgress : 
-                            I18nKey.projectsPlanned)}
-                    </span>
-                  </div>
-                  <p class="text-black/60 dark:text-white/60 mb-4 line-clamp-2">
-                    {project.description}
-                  </p>
-                  <div class="flex flex-wrap gap-2 mb-4">
-                    {project.techStack.slice(0, 4).map((tech) => (
-                      <span class="px-2 py-1 text-xs bg-blue-600/20 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded">
-                        {tech}
-                      </span>
-                    ))}
-                    {project.techStack.length > 4 && (
-                      <span class="px-2 py-1 text-xs bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400 rounded">
-                        +{project.techStack.length - 4}
-                      </span>
-                    )}
-                  </div>
-                  <div class="flex flex-wrap gap-2 text-sm">
-                    {project.visitUrl && (
-                      <a 
-                        href={project.visitUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="btn-gradient btn-gradient-primary btn-gradient-md"
-                      >
-                        <iconify-icon icon="material-symbols:open-in-new" width="18" height="18"></iconify-icon>
-                        {i18n(I18nKey.projectsVisit)}
-                      </a>
-                    )}
-                    {project.sourceCode && (
-                      <a 
-                        href={project.sourceCode} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="btn-gradient btn-github btn-gradient-md"
-                      >
-                        <iconify-icon icon="mdi:github" width="18" height="18"></iconify-icon>
-                        {i18n(I18nKey.projectsGitHub)}
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       <!-- 按分类展示项目 -->
       <div class="space-y-8">
         {categories.map((category) => {
           const categoryProjects = projectsByCategory[category];
           if (categoryProjects.length === 0) return null;
-          
+
           return (
             <div>
               <h2 id={`projects-${category}`} class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4 relative
                         before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
                         before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
                 {getCategoryText(category)}
-                <span class="text-lg font-normal text-black/60 dark:text-white/60 ml-2">
-                  ({categoryProjects.length})
-                </span>
               </h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categoryProjects.map((project) => (
-                  <div class="bg-transparent rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    {project.image && (
-                      <div class="aspect-video overflow-hidden">
-                        <img 
-                          src={project.image} 
-                          alt={project.title}
-                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-                    <div class="p-4">
-                      <div class="flex items-start justify-between mb-2">
-                        <h3 class="text-lg font-semibold text-black/90 dark:text-white/90 line-clamp-1">
-                          {project.title}
-                        </h3>
-                        <span class={`px-2 py-1 text-xs rounded-full shrink-0 ml-2 ${
-                          project.status === 'completed' 
-                            ? 'bg-green-600/20 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                            : project.status === 'in-progress'
-                            ? 'bg-yellow-600/20 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                            : 'bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
-                        }`}>
-                          {i18n(project.status === 'completed' ? I18nKey.projectsCompleted : 
-                                project.status === 'in-progress' ? I18nKey.projectsInProgress : 
-                                I18nKey.projectsPlanned)}
-                        </span>
-                      </div>
-                      <p class="text-black/60 dark:text-white/60 mb-3 text-sm line-clamp-2">
-                        {project.description}
-                      </p>
-                      <div class="flex flex-wrap gap-1 mb-3">
-                        {project.techStack.slice(0, 3).map((tech) => (
-                          <span class="px-2 py-1 text-xs bg-blue-600/20 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded">
-                            {tech}
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {categoryProjects.map((project) => {
+                  const projectPosts = postsByProject[project.title] || [];
+                  return (
+                    <div class="project-card bg-transparent rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                      {project.image && (
+                        <div class="aspect-video overflow-hidden">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+                      <div class="p-5">
+                        <div class="flex items-center justify-between mb-2">
+                          <h3 class="text-lg font-semibold text-black/90 dark:text-white/90">
+                            {project.title}
+                          </h3>
+                          <span class={`px-2 py-0.5 text-xs rounded-full ${
+                            project.status === 'completed'
+                              ? 'bg-green-600/20 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                              : project.status === 'in-progress'
+                              ? 'bg-yellow-600/20 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                              : 'bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+                          }`}>
+                            {i18n(project.status === 'completed' ? I18nKey.projectsCompleted :
+                                  project.status === 'in-progress' ? I18nKey.projectsInProgress :
+                                  I18nKey.projectsPlanned)}
                           </span>
-                        ))}
-                        {project.techStack.length > 3 && (
-                          <span class="px-2 py-1 text-xs bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400 rounded">
-                            +{project.techStack.length - 3}
-                          </span>
-                        )}
-                      </div>
-                      <div class="flex flex-wrap gap-2 text-sm">
-                        {project.visitUrl && (
-                          <a 
-                            href={project.visitUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="btn-gradient btn-gradient-primary btn-gradient-md"
-                          >
-                            <iconify-icon icon="material-symbols:open-in-new" width="18" height="18"></iconify-icon>
-                            {i18n(I18nKey.projectsVisit)}
-                          </a>
-                        )}
-                        {project.sourceCode && (
-                          <a 
-                            href={project.sourceCode} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="btn-gradient btn-github btn-gradient-md"
-                          >
-                            <iconify-icon icon="mdi:github" width="18" height="18"></iconify-icon>
-                            {i18n(I18nKey.projectsGitHub)}
-                          </a>
+                        </div>
+                        <p class="text-black/60 dark:text-white/60 text-sm mb-3">
+                          {project.description}
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                          {project.techStack.map((tech) => (
+                            <span class="px-2 py-0.5 text-xs bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60 rounded">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                          {project.visitUrl && (
+                            <a href={project.visitUrl} target="_blank" rel="noopener noreferrer"
+                               class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+                               style="background: var(--primary); color: white;">
+                              访问项目
+                            </a>
+                          )}
+                          {project.sourceCode && (
+                            <a href={project.sourceCode} target="_blank" rel="noopener noreferrer"
+                               class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium">
+                              源码
+                            </a>
+                          )}
+                          {projectPosts.length > 0 && (
+                            <button
+                              class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium project-articles-btn"
+                              data-project={project.title}
+                            >
+                              文章 ({projectPosts.length})
+                            </button>
+                          )}
+                        </div>
+                        <!-- 项目文章列表（默认隐藏） -->
+                        {projectPosts.length > 0 && (
+                          <div class="project-articles hidden mt-4 pt-4 border-t border-black/10 dark:border-white/10" data-project-list={project.title}>
+                            {projectPosts.map((post) => (
+                              <a href={post.id ? `/posts/${post.id.replace(/\.md$/, '')}/` : '#'}
+                                 class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors group">
+                                <div class="text-sm text-black/50 dark:text-white/50 shrink-0">
+                                  {formatDate(post.data.published)}
+                                </div>
+                                <div class="text-sm font-medium text-black/75 dark:text-white/75 group-hover:text-[var(--primary)] transition-colors truncate">
+                                  {post.data.title}
+                                </div>
+                              </a>
+                            ))}
+                          </div>
                         )}
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           );
         })}
       </div>
 
-      <!-- 技术栈统计 -->
+      <!-- 有文章但没有在 projectsData 中定义的项目 -->
+      {articleProjectNames.filter(name => !projectsData.some(p => p.title === name)).map((projName) => {
+        const projPosts = postsByProject[projName];
+        return (
+          <div class="mt-8">
+            <h2 id={`project-${projName}`} class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4 relative
+                      before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
+                      before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
+              {projName}
+              <span class="text-lg font-normal text-black/60 dark:text-white/60 ml-2">
+                ({projPosts.length} 篇文章)
+              </span>
+            </h2>
+            <div class="card-base p-4">
+              {projPosts.map((post) => (
+                <a href={`/posts/${post.id.replace(/\.md$/, '')}/`}
+                   class="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors group">
+                  <div class="text-sm text-black/50 dark:text-white/50 shrink-0">
+                    {formatDate(post.data.published)}
+                  </div>
+                  <div class="text-sm font-medium text-black/75 dark:text-white/75 group-hover:text-[var(--primary)] transition-colors truncate">
+                    {post.data.title}
+                  </div>
+                  <div class="hidden md:block text-xs text-black/40 dark:text-white/40 truncate ml-auto">
+                    {post.data.tags.map(t => `#${t}`).join(' ')}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <!-- 技术栈 -->
       <div class="mt-12 pt-8 border-t border-black/10 dark:border-white/10">
         <h2 id="projects-techstack" class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4">
           {i18n(I18nKey.projectsTechStack)}
         </h2>
         <div class="flex flex-wrap gap-2">
           {allTechStack.map((tech) => (
-            <span class="px-3 py-1 text-sm bg-gray-600/20 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-full">
+            <span class="px-3 py-1 text-sm bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60 rounded-full">
               {tech}
             </span>
           ))}
@@ -310,18 +245,20 @@ const getCategoryText = (category: string) => {
   </div>
 </MainGridLayout>
 
-<style>
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-</style>
+<script>
+  // 项目文章展开/收起
+  document.querySelectorAll('.project-articles-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const projectName = btn.getAttribute('data-project');
+      const articlesDiv = document.querySelector(`.project-articles[data-project-list="${projectName}"]`);
+      if (articlesDiv) {
+        articlesDiv.classList.toggle('hidden');
+        const isHidden = articlesDiv.classList.contains('hidden');
+        btn.textContent = btn.textContent!.replace(
+          isHidden ? '收起' : '文章',
+          isHidden ? '文章' : '收起'
+        );
+      }
+    });
+  });
+</script>
