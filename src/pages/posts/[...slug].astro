@@ -111,7 +111,6 @@ if (isEncrypted) {
     ).toString();
 }
 
-
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "BlogPosting",
@@ -252,7 +251,6 @@ const jsonLd = {
                             <Content />
                         </Markdown>
 
-                        )}
 
                         {licenseConfig.enable && (
                             <License
@@ -271,7 +269,6 @@ const jsonLd = {
             }
         </div>
     </div>
-
 
     {shareConfig.enable && (
         <div id="float-share">
@@ -298,6 +295,7 @@ const jsonLd = {
             </div>
         </div>
     )}
+
     <!-- 评论 -->
     <Comment post={entry} />
 
