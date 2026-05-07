@@ -15,8 +15,8 @@ const hasHeadings = headings && headings.length > 0;
 
 <div id="right-sidebar" class:list={[className, "w-full"]}>
   {hasHeadings ? (
-    <!-- 文章页：悬浮 TOC -->
-    <div class="sticky top-20" style="max-height: calc(100vh - 5rem); overflow-y: auto; overflow-x: hidden;">
+    <!-- 文章页：悬浮 TOC（JS 控制 fixed 定位） -->
+    <div id="floating-toc-wrapper">
       <TOC headings={headings} />
     </div>
   ) : (
@@ -48,51 +48,62 @@ const hasHeadings = headings && headings.length > 0;
   }
 </style>
 
-<script>
-  import { widgetManager } from "../../utils/widget-manager";
+<script is:inline>
+  (function() {
+    var wrapper = document.getElementById('floating-toc-wrapper');
+    if (!wrapper) return;
 
-  class RightSidebarManager {
-    constructor() {
-      this.init();
-    }
+    var sidebar = document.getElementById('right-sidebar');
+    var origRect = null;
+    var isFixed = false;
 
-    init() {
-      this.updateResponsiveDisplay();
-      window.addEventListener('resize', () => this.updateResponsiveDisplay());
-
-      if (typeof window !== 'undefined' && (window as any).swup) {
-        (window as any).swup.hooks.on('content:replace', () => {
-          setTimeout(() => {
-            this.updateResponsiveDisplay();
-          }, 100);
-        });
+    function saveRect() {
+      if (isFixed) {
+        wrapper.style.position = '';
+        wrapper.style.top = '';
+        wrapper.style.width = '';
+        wrapper.style.maxHeight = '';
+        wrapper.style.zIndex = '';
+        isFixed = false;
       }
+      origRect = sidebar.getBoundingClientRect();
     }
 
-    updateResponsiveDisplay() {
-      const breakpoints = widgetManager.getBreakpoints();
-      const width = window.innerWidth;
+    function onScroll() {
+      if (!origRect) saveRect();
+      if (!origRect) return;
 
-      let deviceType: 'mobile' | 'tablet' | 'desktop';
-      if (width < breakpoints.mobile) {
-        deviceType = 'mobile';
-      } else if (width < breakpoints.tablet) {
-        deviceType = 'tablet';
+      if (window.scrollY > origRect.top + window.scrollY - 80) {
+        if (!isFixed) {
+          wrapper.style.position = 'fixed';
+          wrapper.style.top = '5rem';
+          wrapper.style.width = origRect.width + 'px';
+          wrapper.style.maxHeight = 'calc(100vh - 6rem)';
+          wrapper.style.overflowY = 'auto';
+          wrapper.style.zIndex = '40';
+          isFixed = true;
+        }
       } else {
-        deviceType = 'desktop';
-      }
-
-      const shouldShow = widgetManager.shouldShowSidebar(deviceType);
-      const sidebar = document.getElementById('right-sidebar');
-
-      if (sidebar) {
-        sidebar.style.setProperty(
-          `--sidebar-${deviceType}-display`,
-          shouldShow ? 'block' : 'none'
-        );
+        if (isFixed) {
+          wrapper.style.position = '';
+          wrapper.style.top = '';
+          wrapper.style.width = '';
+          wrapper.style.maxHeight = '';
+          wrapper.style.overflowY = '';
+          wrapper.style.zIndex = '';
+          isFixed = false;
+        }
       }
     }
-  }
 
-  new RightSidebarManager();
+    saveRect();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function() { saveRect(); onScroll(); });
+
+    if (typeof window !== 'undefined' && window['swup']) {
+      window['swup'].hooks.on('content:replace', function() {
+        setTimeout(function() { saveRect(); onScroll(); }, 200);
+      });
+    }
+  })();
 </script>
