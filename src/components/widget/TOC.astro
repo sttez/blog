@@ -257,14 +257,6 @@ class TableOfContents extends HTMLElement {
     };
 
     regenerateTOC(retryCount = 0) {
-        // 检查是否为文章页面
-        const isPostPage = window.location.pathname.includes('/posts/') || 
-                          document.querySelector('.custom-md, .markdown-content') !== null;
-        if (!isPostPage) {
-            // 如果不是文章页面，隐藏TOC
-            this.innerHTML = '';
-            return;
-        }
         // 从当前页面重新获取标题
         const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
             .filter(h => h.id)
@@ -335,6 +327,10 @@ class TableOfContents extends HTMLElement {
                 </a>`;
             }).join('');
         this.innerHTML = tocHTML + '<div id="active-indicator" style="opacity: 0" class="-z-10 absolute bg-[var(--toc-btn-hover)] left-0 right-0 rounded-xl transition-all group-hover:bg-transparent border-2 border-[var(--toc-btn-hover)] group-hover:border-[var(--toc-btn-active)] border-dashed"></div>';
+        // 通知侧边栏TOC已生成内容
+        if (headings.length > 0) {
+            this.dispatchEvent(new CustomEvent('toc-content-ready', { bubbles: true, detail: { count: headings.length } }));
+        }
     }
 
     disconnectedCallback() {

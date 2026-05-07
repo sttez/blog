@@ -38,14 +38,14 @@ export const siteConfig: SiteConfig = {
 
 	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
 	featurePages: {
-		anime: false, // 番剧页面开关
-		diary: true, // 日记页面开关
-		friends: true, // 友链页面开关
-		projects: true, // 项目页面开关
-		skills: true, // 技能页面开关
-		timeline: true, // 时间线页面开关
-		albums: true, // 相册页面开关
-		devices: false, // 设备页面开关
+		anime: false,
+		diary: false,
+		friends: true,
+		projects: true,
+		skills: true,
+		timeline: false,
+		albums: false,
+		devices: false,
 	},
 
 	// 顶栏标题配置
@@ -89,7 +89,7 @@ export const siteConfig: SiteConfig = {
 		// "mobile" = 仅在移动端显示
 		// "desktop" = 仅在桌面端显示
 		// "both" = 在所有设备上显示
-		showModeSwitchOnMobile: "desktop",
+		showModeSwitchOnMobile: "off",
 	},
 
 	banner: {
@@ -167,7 +167,7 @@ export const siteConfig: SiteConfig = {
 	},
 	toc: {
 		enable: true, // 启用目录功能
-		mode: "sidebar", // 目录显示模式："float" 悬浮按钮模式，"sidebar" 侧边栏模式
+		mode: "float", // 目录显示模式："float" 悬浮按钮模式，"sidebar" 侧边栏模式
 		depth: 2, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
 		useJapaneseBadge: false, // 使用日语假名标记（あいうえお...）代替数字，开启后会将 1、2、3... 改为 あ、い、う...
 	},
@@ -182,24 +182,19 @@ export const siteConfig: SiteConfig = {
 		// }
 	],
 
-	// 字体配置
+	// 字体配置 - 使用系统默认字体
 	font: {
-		// 注意：自定义字体需要在 src/styles/main.css 中引入字体文件
-		// 注意：字体子集优化功能目前仅支持 TTF 格式字体,开启后需要在生产环境才能看到效果,在Dev环境下显示的是浏览器默认字体!
 		asciiFont: {
-			// 英文字体 - 优先级最高
-			// 指定为英文字体则无论字体包含多大范围，都只会保留 ASCII 字符子集
-			fontFamily: "ZenMaruGothic-Medium",
+			fontFamily: "system-ui",
 			fontWeight: "400",
-			localFonts: ["ZenMaruGothic-Medium.ttf"],
-			enableCompress: true, // 启用字体子集优化，减少字体文件大小
+			localFonts: [],
+			enableCompress: false,
 		},
 		cjkFont: {
-			// 中日韩字体 - 作为回退字体
-			fontFamily: "微软雅黑",
-			fontWeight: "500",
-			localFonts: ["微软雅黑.ttf"],
-			enableCompress: true, // 启用字体子集优化，减少字体文件大小
+			fontFamily: "system-ui",
+			fontWeight: "400",
+			localFonts: [],
+			enableCompress: false,
 		},
 	},
 	showLastModified: true, // 控制“上次编辑”卡片显示的开关
@@ -236,82 +231,25 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
-		LinkPreset.Archive,
-		// 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
 		{
-			name: "链接",
-			url: "/links/",
-			icon: "material-symbols:link",
-			children: [
-				{
-					name: "GitHub",
-					url: "https://github.com/sttez",
-					external: true,
-					icon: "fa6-brands:github",
-				},
-				{
-					name: "Bilibili",
-					url: "https://bilibili.com",
-					external: true,
-					icon: "fa6-brands:bilibili",
-				},
-			],
+			name: "文章",
+			url: "/posts/",
+			icon: "material-symbols:article",
 		},
 		{
-			name: "我的",
-			url: "/content/",
-			icon: "material-symbols:person",
-			children: [
-				{
-					name: "记录",
-					url: "/diary/",
-					icon: "material-symbols:book",
-				},
-				{
-					name: "相册",
-					url: "/albums/",
-					icon: "material-symbols:photo-library",
-				},
-			],
+			name: "项目",
+			url: "/projects/",
+			icon: "material-symbols:work",
 		},
 		{
-			name: "关于",
-			url: "/content/",
+			name: "技能",
+			url: "/skills/",
+			icon: "material-symbols:psychology",
+		},
+		{
+			name: "关于我",
+			url: "/about/",
 			icon: "material-symbols:info",
-			children: [
-				{
-					name: "关于",
-					url: "/about/",
-					icon: "material-symbols:person",
-				},
-				{
-					name: "友链",
-					url: "/friends/",
-					icon: "material-symbols:group",
-				},
-			],
-		},
-		{
-			name: "其他",
-			url: "#",
-			icon: "material-symbols:more-horiz",
-			children: [
-				{
-					name: "项目展示",
-					url: "/projects/",
-					icon: "material-symbols:work",
-				},
-				{
-					name: "技能展示",
-					url: "/skills/",
-					icon: "material-symbols:psychology",
-				},
-				{
-					name: "时间线",
-					url: "/timeline/",
-					icon: "material-symbols:timeline",
-				},
-			],
 		},
 	],
 };
@@ -441,169 +379,86 @@ export const footerConfig: FooterConfig = {
  * sidebar: 控制组件在左侧栏和右侧栏,注意移动端是不会显示右侧栏的内容(unilateral模式除外),在设置了right属性的时候请确保你使用双侧(both)布局
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-	// 侧边栏位置：单侧(unilateral)或双侧(both)
 	position: "both",
 
-	// 侧边栏组件配置列表
 	components: [
 		{
-			// 组件类型：用户资料组件
 			type: "profile",
-			// 是否启用该组件
 			enable: true,
-			// 组件显示顺序（数字越小越靠前）
 			order: 1,
-			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
 			sidebar: "left",
-			// CSS 类名，用于应用样式和动画
-			class: "onload-animation",
-			// 动画延迟时间（毫秒），用于错开动画效果
+			class: "",
 			animationDelay: 0,
 		},
 		{
-			// 组件类型：公告组件
 			type: "announcement",
-			// 是否启用该组件（现在通过统一配置控制）
 			enable: true,
-			// 组件显示顺序
 			order: 2,
-			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
 			sidebar: "left",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 50,
+			class: "",
+			animationDelay: 0,
 		},
 		{
-			// 组件类型：分类组件
 			type: "categories",
-			// 是否启用该组件
 			enable: true,
-			// 组件显示顺序
 			order: 3,
-			// 组件位置："sticky" 表示粘性定位，可滚动
 			position: "sticky",
-			// 所在侧边栏
 			sidebar: "left",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 150,
-			// 响应式配置
+			class: "",
+			animationDelay: 0,
 			responsive: {
-				// 折叠阈值：当分类数量超过5个时自动折叠
 				collapseThreshold: 5,
 			},
 		},
 		{
-			// 组件类型：标签组件
-			type: "tags",
-			// 是否启用该组件
+			type: "site-stats",
 			enable: true,
-			// 组件显示顺序
-			order: 5,
-			// 组件位置："sticky" 表示粘性定位
+			order: 4,
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 250,
-			// 响应式配置
+			sidebar: "right",
+			class: "",
+			animationDelay: 0,
+		},
+		{
+			type: "tags",
+			enable: true,
+			order: 5,
+			position: "top",
+			sidebar: "right",
+			class: "",
+			animationDelay: 0,
 			responsive: {
-				// 折叠阈值：当标签数量超过20个时自动折叠
 				collapseThreshold: 20,
 			},
 		},
 		{
-			// 组件类型：文章项目归类组件
-			type: "projects",
-			// 是否启用该组件
+			type: "toc",
 			enable: true,
-			// 组件显示顺序
-			order: 4,
-			// 组件位置
-			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 200,
-			// 响应式配置
-			responsive: {
-				// 折叠阈值：当项目数量超过5个时自动折叠
-				collapseThreshold: 5,
-			},
-		},
-		{
-			// 组件类型：站点统计组件
-			type: "site-stats",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 5,
-			// 组件位置
-			position: "top",
-			// 所在侧边栏
-			sidebar: "right",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 200,
-		},
-		{
-			// 组件类型：日历组件(移动端不显示)
-			type: "calendar",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
 			order: 6,
-			// 组件位置
-			position: "top",
-			// 所在侧边栏
+			position: "sticky",
 			sidebar: "right",
-			// CSS 类名
-			class: "onload-animation",
-			// 动画延迟时间
-			animationDelay: 250,
+			class: "",
+			animationDelay: 0,
 		},
 	],
 
-	// 默认动画配置
 	defaultAnimation: {
-		// 是否启用默认动画
-		enable: true,
-		// 基础延迟时间（毫秒）
+		enable: false,
 		baseDelay: 0,
-		// 递增延迟时间（毫秒），每个组件依次增加的延迟
-		increment: 50,
+		increment: 0,
 	},
 
-	// 响应式布局配置
 	responsive: {
-		// 断点配置（像素值）
 		breakpoints: {
-			// 移动端断点：屏幕宽度小于768px
 			mobile: 768,
-			// 平板端断点：屏幕宽度小于1280px
 			tablet: 1280,
-			// 桌面端断点：屏幕宽度小于1280px
 			desktop: 1280,
 		},
-		// 不同设备的布局模式
-		//hidden:不显示侧边栏(桌面端)   drawer:抽屉模式(移动端不显示)   sidebar:显示侧边栏
 		layout: {
-			// 移动端：抽屉模式
 			mobile: "sidebar",
-			// 平板端：显示侧边栏
 			tablet: "sidebar",
-			// 桌面端：显示侧边栏
 			desktop: "sidebar",
 		},
 	},

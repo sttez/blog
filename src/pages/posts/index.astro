@@ -1,0 +1,78 @@
+---
+import ArchivePanel from "../../components/ArchivePanel.svelte";
+import PostCard from "../../components/PostCard.astro";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../../utils/content-utils";
+
+const allPosts = await getSortedPosts();
+---
+
+<MainGridLayout>
+    <div class="mb-4 flex justify-end gap-2">
+        <button
+            id="view-archive"
+            class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+            style="background: var(--primary); color: white;"
+        >
+            归档视图
+        </button>
+        <button
+            id="view-list"
+            class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+        >
+            列表视图
+        </button>
+    </div>
+
+    <div id="archive-view">
+        <ArchivePanel
+            client:only="svelte"
+            tags={[]}
+            categories={[]}
+            sortedPosts={allPosts}
+        />
+    </div>
+
+    <div id="list-view" class="hidden">
+        <div class="flex flex-col gap-4">
+            {allPosts.map((entry, index) => (
+                <PostCard
+                    entry={entry}
+                    style={`animation-delay: ${index * 50}ms;`}
+                />
+            ))}
+        </div>
+    </div>
+</MainGridLayout>
+
+<script>
+    const archiveBtn = document.getElementById("view-archive");
+    const listBtn = document.getElementById("view-list");
+    const archiveView = document.getElementById("archive-view");
+    const listView = document.getElementById("list-view");
+
+    function showArchive() {
+        archiveView?.classList.remove("hidden");
+        listView?.classList.add("hidden");
+        archiveBtn?.setAttribute("style", "background: var(--primary); color: white;");
+        listBtn?.removeAttribute("style");
+        localStorage.setItem("postsViewMode", "archive");
+    }
+
+    function showList() {
+        archiveView?.classList.add("hidden");
+        listView?.classList.remove("hidden");
+        listBtn?.setAttribute("style", "background: var(--primary); color: white;");
+        archiveBtn?.removeAttribute("style");
+        localStorage.setItem("postsViewMode", "list");
+    }
+
+    archiveBtn?.addEventListener("click", showArchive);
+    listBtn?.addEventListener("click", showList);
+
+    // Restore saved view mode
+    const savedMode = localStorage.getItem("postsViewMode");
+    if (savedMode === "list") {
+        showList();
+    }
+</script>

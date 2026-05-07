@@ -169,4 +169,34 @@ function renderComponent(component: any, index: number, _components: any[]) {
   
   // 初始化右侧边栏管理器
   new RightSidebarManager();
+
+  // 当 TOC 有内容时，隐藏站点统计和标签
+  function hideWidgetsWhenTOCHasContent() {
+    const toc = document.querySelector('table-of-contents');
+    if (toc && toc.innerHTML.trim().length > 50) {
+      toggleSidebarWidgets(false);
+    }
+  }
+
+  function toggleSidebarWidgets(show: boolean) {
+    const sidebar = document.getElementById('right-sidebar');
+    if (!sidebar) return;
+    // 找到右侧边栏中所有非 TOC 的 widget 容器
+    const containers = sidebar.querySelectorAll(':scope > div > div.widget-layout, :scope > div > .card-base');
+    containers.forEach(w => {
+      if (w.querySelector('table-of-contents')) return;
+      (w as HTMLElement).style.display = show ? '' : 'none';
+    });
+  }
+
+  // 监听 TOC 组件自定义事件
+  document.addEventListener('toc-content-ready', () => {
+    toggleSidebarWidgets(false);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(hideWidgetsWhenTOCHasContent, 500));
+  } else {
+    setTimeout(hideWidgetsWhenTOCHasContent, 500);
+  }
 </script>

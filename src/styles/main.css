@@ -2,35 +2,8 @@
 @import "./albums.css";
 /* 导入追番页面样式 */
 @import "./anime.css";
-/* 导入动画样式 */
-@import "./transition.css";
-@import "./animation-enhancements.css";
 /* 导入渐变按钮样式 */
 @import "./gradient-buttons.css";
-/* 加密内容样式已移除，现在直接使用非加密文章的样式 */
-
-/* 导入 ZenMaruGothic-Medium 字体 */
-@font-face {
-  font-family: "ZenMaruGothic-Medium";
-  src: url("/assets/font/ZenMaruGothic-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: "微软雅黑";
-  src: url("/assets/font/微软雅黑.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-/* 导入 萝莉体 第二版 字体 */
-@font-face {
-  font-family: "萝莉体 第二版";
-  src: url("/assets/font/萝莉体 第二版.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
 
 @tailwind base;
 @tailwind components;

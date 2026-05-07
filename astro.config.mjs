@@ -3,7 +3,6 @@ import svelte, { vitePreprocess } from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
-import swup from "@swup/astro";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -37,29 +36,6 @@ export default defineConfig({
 	integrations: [
 		tailwind({
 			nesting: true,
-		}),
-		swup({
-			theme: false,
-			animationClass: "transition-swup-",
-			containers: ["main"],
-			smoothScrolling: false, // 禁用平滑滚动以提升性能，避免与锚点导航冲突
-			cache: true,
-			preload: true, // swup 默认鼠标悬停预加载
-			accessibility: true,
-			updateHead: true,
-			updateBodyClass: false,
-			globalInstance: true,
-			// 滚动相关配置优化
-			resolveUrl: (url) => url,
-			animateHistoryBrowsing: false,
-			skipPopStateHandling: (event) => {
-				// 跳过锚点链接的处理，让浏览器原生处理
-				return (
-					event.state &&
-					event.state.url &&
-					event.state.url.includes("#")
-				);
-			},
 		}),
 		icon(),
 		expressiveCode({

@@ -1,6 +1,9 @@
 # build output
 dist/
 docs/
+
+# claude code
+.superpowers/
 # generated types
 .astro/
 

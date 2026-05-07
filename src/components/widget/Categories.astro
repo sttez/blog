@@ -1,41 +1,31 @@
 ---
-import I18nKey from "../../i18n/i18nKey";
-import { i18n } from "../../i18n/translation";
-import { getCategoryList } from "../../utils/content-utils";
-import { widgetManager } from "../../utils/widget-manager";
-import ButtonLink from "../control/ButtonLink.astro";
 import WidgetLayout from "./WidgetLayout.astro";
+import ButtonLink from "../control/ButtonLink.astro";
 
-const categories = await getCategoryList();
-
-const COLLAPSED_HEIGHT = "7.5rem";
-
-// 使用统一的组件管理器检查是否应该折叠
-const categoriesComponent = widgetManager
-	.getConfig()
-	.components.find((c) => c.type === "categories");
-const isCollapsed = categoriesComponent
-	? widgetManager.isCollapsed(categoriesComponent, categories.length)
-	: false;
+// 固定分类列表，点击跳转到文章页并自动筛选
+const categories = [
+    { name: "技术", url: "/posts/?category=技术" },
+    { name: "踩坑", url: "/posts/?category=踩坑" },
+    { name: "指南", url: "/posts/?category=指南" },
+];
 
 interface Props {
-	class?: string;
-	style?: string;
+    class?: string;
+    style?: string;
 }
 const className = Astro.props.class;
 const style = Astro.props.style;
 ---
 
-<WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
+<WidgetLayout name="分类" id="categories" isCollapsed={false}
                 class={className} style={style}
 >
     {categories.map((c) =>
         <ButtonLink
             url={c.url}
-            badge={String(c.count)}
-            label={`View all posts in the ${c.name.trim()} category`}
+            label={`查看 ${c.name} 分类的文章`}
         >
-            {c.name.trim()}
+            {c.name}
         </ButtonLink>
     )}
 </WidgetLayout>
