@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [AI, DeepSeek, MiMo, OpenAI, 适配层, TypeScript]
 pinned: false
 description: "如何设计一个轻量级的 AI Provider 抽象层，在 DeepSeek、MiMo、OpenAI 之间无缝切换。"
-category: 技术分析
+category: 技术
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

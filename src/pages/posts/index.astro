@@ -5,23 +5,38 @@ import MainGridLayout from "../../layouts/MainGridLayout.astro";
 import { getSortedPosts } from "../../utils/content-utils";
 
 const allPosts = await getSortedPosts();
+const categories = ["技术", "踩坑", "指南"];
 ---
 
 <MainGridLayout>
-    <div class="mb-4 flex justify-end gap-2">
-        <button
-            id="view-archive"
-            class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
-            style="background: var(--primary); color: white;"
-        >
-            归档视图
-        </button>
-        <button
-            id="view-list"
-            class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
-        >
-            列表视图
-        </button>
+    <div class="mb-4 flex flex-wrap justify-between items-center gap-2">
+        <!-- 左侧：分类筛选按钮 -->
+        <div class="flex gap-2">
+            {categories.map((cat) => (
+                <button
+                    class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium category-btn"
+                    data-category={cat}
+                >
+                    {cat}
+                </button>
+            ))}
+        </div>
+        <!-- 右侧：视图切换按钮 -->
+        <div class="flex gap-2">
+            <button
+                id="view-archive"
+                class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+                style="background: var(--primary); color: white;"
+            >
+                归档视图
+            </button>
+            <button
+                id="view-list"
+                class="btn-regular px-3 py-1.5 rounded-lg text-sm font-medium"
+            >
+                列表视图
+            </button>
+        </div>
     </div>
 
     <div id="archive-view">
@@ -75,4 +90,29 @@ const allPosts = await getSortedPosts();
     if (savedMode === "list") {
         showList();
     }
+
+    // 分类筛选按钮逻辑
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const params = new URLSearchParams(window.location.search);
+    const activeCategory = params.get('category');
+
+    // 高亮当前激活的分类按钮
+    categoryBtns.forEach(btn => {
+        const cat = btn.getAttribute('data-category');
+        if (cat === activeCategory) {
+            btn.setAttribute('style', 'background: var(--primary); color: white;');
+        }
+
+        btn.addEventListener('click', () => {
+            const currentParams = new URLSearchParams(window.location.search);
+            if (currentParams.get('category') === cat) {
+                // 再次点击取消筛选
+                currentParams.delete('category');
+            } else {
+                currentParams.set('category', cat!);
+            }
+            const qs = currentParams.toString();
+            window.location.href = '/posts/' + (qs ? '?' + qs : '');
+        });
+    });
 </script>

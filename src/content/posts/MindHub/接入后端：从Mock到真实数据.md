@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Supabase, DeepSeek, 数据库, AI API, Firecrawl]
 pinned: false
 description: "接入 Supabase 数据库和 DeepSeek AI API，完成从 mock 数据到生产级数据层的切换。"
-category: 开发流程
+category: 技术
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

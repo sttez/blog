@@ -14,10 +14,11 @@ tags = params.has("tag") ? params.getAll("tag") : [];
 categories = params.has("category") ? params.getAll("category") : [];
 const uncategorized = params.get("uncategorized");
 const projectFilter = params.get("project");
+const viewMode = params.get("view");
 
 interface Post {
 	id: string;
-	url?: string; // 预计算的文章 URL
+	url?: string;
 	data: {
 		title: string;
 		tags: string[];
@@ -25,16 +26,17 @@ interface Post {
 		project?: string;
 		published: Date;
 		alias?: string;
-		permalink?: string; // 自定义固定链接
+		permalink?: string;
 	};
 }
 
 interface Group {
-	year: number;
+	label: string;
 	posts: Post[];
 }
 
 let groups: Group[] = [];
+let isProjectView = viewMode === "project";
 
 function formatDate(date: Date) {
 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -78,26 +80,56 @@ onMount(async () => {
 		.slice()
 		.sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
 
-	const grouped = filteredPosts.reduce(
-		(acc, post) => {
-			const year = post.data.published.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
-			}
-			acc[year].push(post);
-			return acc;
-		},
-		{} as Record<number, Post[]>,
-	);
+	if (isProjectView) {
+		// 按项目分组
+		const grouped = filteredPosts.reduce(
+			(acc, post) => {
+				const project = post.data.project || "未归类";
+				if (!acc[project]) {
+					acc[project] = [];
+				}
+				acc[project].push(post);
+				return acc;
+			},
+			{} as Record<string, Post[]>,
+		);
 
-	const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
-		year: Number.parseInt(yearStr, 10),
-		posts: grouped[Number.parseInt(yearStr, 10)],
-	}));
+		const groupedArray = Object.keys(grouped).map((name) => ({
+			label: name,
+			posts: grouped[name],
+		}));
 
-	groupedPostsArray.sort((a, b) => b.year - a.year);
+		// 未归类排最后
+		groupedArray.sort((a, b) => {
+			if (a.label === "未归类") return 1;
+			if (b.label === "未归类") return -1;
+			return a.label.localeCompare(b.label);
+		});
 
-	groups = groupedPostsArray;
+		groups = groupedArray;
+	} else {
+		// 按年份分组
+		const grouped = filteredPosts.reduce(
+			(acc, post) => {
+				const year = post.data.published.getFullYear();
+				if (!acc[year]) {
+					acc[year] = [];
+				}
+				acc[year].push(post);
+				return acc;
+			},
+			{} as Record<number, Post[]>,
+		);
+
+		const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
+			label: yearStr,
+			posts: grouped[Number.parseInt(yearStr, 10)],
+		}));
+
+		groupedPostsArray.sort((a, b) => Number.parseInt(b.label) - Number.parseInt(a.label));
+
+		groups = groupedPostsArray;
+	}
 });
 </script>
 
@@ -106,7 +138,7 @@ onMount(async () => {
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">
                 <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-75">
-                    {group.year}
+                    {group.label}
                 </div>
                 <div class="w-[15%] md:w-[10%]">
                     <div

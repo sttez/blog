@@ -4,7 +4,7 @@ published: 2025-01-20
 pinned: true
 description: Markdown 写作的完整语法示例。
 tags: [Markdown, 博客]
-category: 示例
+category: 技术
 licenseName: "Unlicensed"
 author: emn178
 sourceLink: "https://github.com/emn178/markdown"

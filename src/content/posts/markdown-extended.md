@@ -5,7 +5,7 @@ updated: 2024-11-29
 description: '了解 Mizuki 中的 Markdown 扩展功能'
 image: ''
 tags: [示例, 演示, Markdown, mizuki]
-category: '示例'
+category: '技术'
 draft: false
 ---
 

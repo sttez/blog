@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Cytoscape, Next.js, SSR, 知识图谱, 踩坑]
 pinned: false
 description: "Cytoscape.js 需要真实 DOM 才能初始化，但 Next.js 在服务端预渲染时根本没有 DOM"
-category: 踩坑记录
+category: 踩坑
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

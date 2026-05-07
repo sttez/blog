@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Supabase, 数据迁移, Mock, 架构重构, 踩坑]
 pinned: false
 description: "整个应用 6 个页面都依赖 mock 数据，迁移到 Supabase 时只能一次性全换"
-category: 踩坑记录
+category: 踩坑
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

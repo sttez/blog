@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Cytoscape.js, 知识图谱, 可视化, 前端, React]
 pinned: false
 description: "对比 Cytoscape.js、D3.js、React Flow、Vis.js 四个图可视化库，选择 Cytoscape.js 构建 MindHub 知识图谱的完整思考过程。"
-category: 技术分析
+category: 技术
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

@@ -4,7 +4,7 @@ published: 2023-10-01
 pinned: false
 description: 在 Markdown 中使用 Mermaid 绘制各种图表的示例。
 tags: [Markdown, 博客, Mermaid]
-category: 示例
+category: 技术
 draft: false
 ---
 

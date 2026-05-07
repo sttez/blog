@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Next.js, App Router, 静态导出, SSG, 前端架构]
 pinned: false
 description: "从零开始用 Next.js 16 App Router + output: 'export' 构建纯静态知识管理应用的实战经验。"
-category: 技术分析
+category: 技术
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"

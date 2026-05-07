@@ -4,7 +4,8 @@ published: 2026-05-07
 tags: [Next.js, 静态导出, 环境变量, DeepSeek, 踩坑]
 pinned: false
 description: "配置 output: 'export' 后 AI API 调用全挂了，原来是没有 NEXT_PUBLIC_ 前缀"
-category: 踩坑记录
+category: 踩坑
+project: MindHub
 draft: false
 author: sttez
 sourceLink: "https://github.com/sttez/mindhub"
