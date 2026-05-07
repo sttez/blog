@@ -22,8 +22,6 @@ import {
 } from "@utils/permalink-utils";
 import { Icon } from "astro-icon/components";
 import CryptoJS from "crypto-js";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import { licenseConfig, permalinkConfig, shareConfig } from "src/config";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import PostMetadata from "../../components/PostMeta.astro";
@@ -113,10 +111,6 @@ if (isEncrypted) {
     ).toString();
 }
 
-dayjs.extend(utc);
-const lastModified = dayjs(entry.data.updated || entry.data.published)
-	.utc()
-	.format("YYYY-MM-DDTHH:mm:ss");
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -254,34 +248,10 @@ const jsonLd = {
                     />
                 ) : (
                     <>
-                        <Markdown class="mb-6 markdown-content onload-animation">
+                        <Markdown class="markdown-content onload-animation">
                             <Content />
                         </Markdown>
 
-                        {shareConfig.enable && (
-                            <div id="float-share">
-                                <button id="float-share-btn" class="btn-regular h-10 w-10 rounded-lg flex items-center justify-center shadow-md" aria-label="分享">
-                                    <Icon name="material-symbols:share" class="text-xl" />
-                                </button>
-                                <div id="float-share-popup" class="hidden absolute right-0 top-12 bg-[var(--card-bg)] rounded-xl shadow-xl p-3 min-w-[10rem] z-50">
-                                    <button class="float-share-item w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="copy">
-                                        <Icon name="material-symbols:link" class="text-lg" />
-                                        <span>复制链接</span>
-                                    </button>
-                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="weibo" target="_blank" rel="noopener noreferrer">
-                                        <Icon name="fa6-brands:weibo" class="text-lg" />
-                                        <span>分享到微博</span>
-                                    </a>
-                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="twitter" target="_blank" rel="noopener noreferrer">
-                                        <Icon name="fa6-brands:x-twitter" class="text-lg" />
-                                        <span>分享到 X</span>
-                                    </a>
-                                    <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="qq" target="_blank" rel="noopener noreferrer">
-                                        <Icon name="fa6-brands:qq" class="text-lg" />
-                                        <span>分享到 QQ</span>
-                                    </a>
-                                </div>
-                            </div>
                         )}
 
                         {licenseConfig.enable && (
@@ -302,95 +272,34 @@ const jsonLd = {
         </div>
     </div>
 
+
+    {shareConfig.enable && (
+        <div id="float-share">
+            <button id="float-share-btn" class="btn-regular h-10 w-10 rounded-lg flex items-center justify-center shadow-md" aria-label="分享">
+                <Icon name="material-symbols:share" class="text-xl" />
+            </button>
+            <div id="float-share-popup" class="hidden absolute right-0 top-12 bg-[var(--card-bg)] rounded-xl shadow-xl p-3 min-w-[10rem] z-50">
+                <button class="float-share-item w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="copy">
+                    <Icon name="material-symbols:link" class="text-lg" />
+                    <span>复制链接</span>
+                </button>
+                <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="weibo" target="_blank" rel="noopener noreferrer">
+                    <Icon name="fa6-brands:weibo" class="text-lg" />
+                    <span>分享到微博</span>
+                </a>
+                <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="twitter" target="_blank" rel="noopener noreferrer">
+                    <Icon name="fa6-brands:x-twitter" class="text-lg" />
+                    <span>分享到 X</span>
+                </a>
+                <a class="float-share-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-sm transition" data-action="qq" target="_blank" rel="noopener noreferrer">
+                    <Icon name="fa6-brands:qq" class="text-lg" />
+                    <span>分享到 QQ</span>
+                </a>
+            </div>
+        </div>
+    )}
     <!-- 评论 -->
     <Comment post={entry} />
-
-    {siteConfig.showLastModified && (
-        <>
-            <div 
-                id="last-modified" 
-                data-last-modified={lastModified}
-                data-prefix={i18n(I18nKey.lastModifiedPrefix)}
-                data-year={i18n(I18nKey.year)}
-                data-month={i18n(I18nKey.month)}
-                data-day={i18n(I18nKey.day)}
-                data-hour={i18n(I18nKey.hour)}
-                data-minute={i18n(I18nKey.minute)}
-                data-second={i18n(I18nKey.second)}
-                style="display: none;"
-            ></div>
-
-            <div class="card-base p-6 mb-4">
-                <script is:inline>
-                    function runtime() {
-                        const lastModifiedElement = document.getElementById('last-modified');
-                        const startDate = new Date(lastModifiedElement.dataset.lastModified);
-                        const currentDate = new Date();
-                        const diff = currentDate - startDate;
-
-                        const seconds = Math.floor(diff / 1000);
-                        const days = Math.floor(seconds / 86400);
-                        const hours = Math.floor((seconds % 86400) / 3600);
-                        const minutes = Math.floor((seconds % 3600) / 60);
-                        const secs = seconds % 60;
-
-                        const years = Math.floor(days / 365);
-                        const months = Math.floor((days % 365) / 30);
-                        const remainingDays = days % 30;
-
-                        const prefix = lastModifiedElement.dataset.prefix;
-                        const yearKey = lastModifiedElement.dataset.year;
-                        const monthKey = lastModifiedElement.dataset.month;
-                        const dayKey = lastModifiedElement.dataset.day;
-                        const hourKey = lastModifiedElement.dataset.hour;
-                        const minuteKey = lastModifiedElement.dataset.minute;
-                        const secondKey = lastModifiedElement.dataset.second;
-
-                        let runtimeString = prefix + ' ';
-                        
-                        if (years > 0) {
-                            runtimeString += `${years} ${yearKey} `;
-                        }
-                        if (months > 0) {
-                            runtimeString += `${months} ${monthKey} `;
-                        }
-                        if (remainingDays > 0) {
-                            runtimeString += `${remainingDays} ${dayKey} `;
-                        }
-                        runtimeString += `${hours} ${hourKey} `;
-                        if (minutes < 10) {
-                            runtimeString += `0${minutes} ${minuteKey} `;
-                        } else {
-                            runtimeString += `${minutes} ${minuteKey} `;
-                        }
-                        if (secs < 10) {
-                            runtimeString += `0${secs} ${secondKey}`;
-                        } else {
-                            runtimeString += `${secs} ${secondKey}`;
-                        }
-
-                        document.getElementById("modifiedtime").innerHTML = runtimeString;
-                    }
-                    setInterval(runtime, 1000);
-                </script>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-lg bg-[var(--enter-btn-bg)]">
-                        <Icon
-                            name="material-symbols:history-rounded"
-                            class="text-3xl text-[var(--primary)]"
-                        />
-                    </div>
-                   
-                    <div class="flex flex-col gap-1">
-                        <div id="modifiedtime" class="text-[1.0rem] leading-tight text-black/75 dark:text-white/75"></div>
-                        <p class="text-[0.8rem] leading-tight text-black/75 dark:text-white/75">
-                            {i18n(I18nKey.lastModifiedOutdated)}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </>
-    )}
 
     <div
         class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full"
@@ -447,9 +356,7 @@ const jsonLd = {
     {shareConfig.enable && (
         <style>
             #float-share {
-                position: absolute;
-                right: 0.5rem;
-                top: 0.5rem;
+                position: fixed;
                 z-index: 45;
             }
             #float-share-popup {
@@ -461,7 +368,20 @@ const jsonLd = {
         (function() {
             var btn = document.getElementById('float-share-btn');
             var popup = document.getElementById('float-share-popup');
-            if (!btn || !popup) return;
+            var wrap = document.getElementById('float-share');
+            if (!btn || !popup || !wrap) return;
+
+            function positionShare() {
+                var container = document.getElementById('post-container');
+                if (!container) return;
+                var rect = container.getBoundingClientRect();
+                wrap.style.left = (rect.right + 8) + 'px';
+                wrap.style.top = (rect.top + 8) + 'px';
+            }
+            positionShare();
+            window.addEventListener('scroll', positionShare, { passive: true });
+            window.addEventListener('resize', positionShare, { passive: true });
+
             var url = encodeURIComponent(window.location.href);
             var title = encodeURIComponent(document.title);
 
