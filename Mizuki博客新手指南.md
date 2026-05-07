@@ -99,7 +99,7 @@ pnpm install
 pnpm dev
 ```
 
-启动成功后，打开浏览器访问 `<!-- http://localhost:4321 -->`，就能看到你的博客了。
+启动成功后，打开浏览器访问 `http://localhost:4321`，就能看到你的博客了。
 
 > **提示：** 开发模式下修改文件会自动刷新页面，所见即所得。
 
@@ -116,7 +116,7 @@ Mizuki/
 │   ├── content/
 │   │   ├── posts/         ← 你的博客文章放在这里
 │   │   └── spec/          ← 特殊页面内容（关于、友链）
-│   ├── data/              ← 特色页面的数据文件（日记、项目、技能等）
+│   ├── data/              ← 特色页面的数据文件（项目、技能、友链）
 │   ├── pages/             ← 页面路由（一般不需要改）
 │   ├── components/        ← 组件（一般不需要改）
 │   └── styles/            ← 样式文件
@@ -143,7 +143,6 @@ Mizuki/
 | 改横幅图片 | `public/assets/desktop-banner/` 和 `mobile-banner/` |
 | 放文章里的图片 | `public/images/` |
 | 改友链数据 | `src/data/friends.ts` |
-| 改日记数据 | `src/data/diary.ts` |
 
 ---
 
@@ -334,8 +333,6 @@ npm install
 
 保存文件后，刷新浏览器就能在首页看到你的文章了。
 
-> **参考示例文章：** 项目自带了几篇示例文章，位于 `src/content/posts/` 下，包括 Markdown 教程、扩展语法演示、视频嵌入等，可以在本地开发时查看效果。正式发布前建议删除或改为草稿。
-
 ---
 
 ## 5. 修改站点信息
@@ -364,14 +361,15 @@ export const profileConfig: ProfileConfig = {
     links: [
         { name: "Bilibili", icon: "fa6-brands:bilibili", url: "https://bilibili.com" },
         { name: "GitHub", icon: "fa6-brands:github", url: "https://github.com/你的用户名" },
+        { name: "Email", icon: "material-symbols:mail", url: "mailto:你的邮箱@example.com" },
     ],
-    donationImage: "/images/donate.webp",  // 赞赏码图片（可选）
+    donationImages: ["/images/donate1.webp", "/images/donate2.webp"],  // 赞赏码图片（可选，两张）
     donationTitle: "赏个鸡腿",
 };
 ```
 
 **头像图片：** 把头像放到 `src/assets/images/` 目录下。
-**赞赏码：** 把图片放到 `public/images/` 下，不需要可以删掉 `donationImage` 那行。
+**赞赏码：** 把两张图片放到 `public/images/` 下，不需要可以删掉 `donationImages` 那行。
 **社交图标：** 在 `links` 里增减，图标去 https://iconify.design/ 搜。
 
 ---
@@ -477,19 +475,16 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
     components: [
         {
             type: "profile",       // 个人资料卡片
-            enable: true,          // ← true 启用, false 关闭
-            order: 1,              // 排序（数字越小越靠前）
-            position: "top",       // "top" = 固定, "sticky" = 粘性
-            sidebar: "left",       // "left" = 左边, "right" = 右边
-            class: "onload-animation",
-            animationDelay: 0,
+            enable: true,
+            order: 1,
+            position: "top",
+            sidebar: "left",
         },
         {
             type: "announcement",  // 公告组件
             enable: true,
             order: 2,
             sidebar: "left",
-            // ...
         },
         {
             type: "categories",    // 分类组件
@@ -497,26 +492,26 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
             order: 3,
             sidebar: "left",
             responsive: {
-                collapseThreshold: 5,  // 超过5个分类自动折叠
-            },
-        },
-        {
-            type: "tags",          // 标签组件
-            enable: true,
-            order: 5,
-            sidebar: "left",
-            responsive: {
-                collapseThreshold: 20, // 超过20个标签自动折叠
+                collapseThreshold: 5,
             },
         },
         {
             type: "site-stats",    // 站点统计
             enable: true,
-            order: 5,
+            order: 4,
             sidebar: "right",
         },
         {
-            type: "calendar",      // 日历组件
+            type: "tags",          // 标签组件
+            enable: true,
+            order: 5,
+            sidebar: "right",
+            responsive: {
+                collapseThreshold: 20,
+            },
+        },
+        {
+            type: "toc",           // 目录组件
             enable: true,
             order: 6,
             sidebar: "right",
@@ -527,15 +522,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 
 ### 想关闭某个组件？
 
-把对应组件的 `enable` 改为 `false` 即可。不需要删除配置项。
+把对应组件的 `enable` 改为 `false` 即可。
 
 ### 常用操作
 
 | 操作 | 怎么做 |
 |------|--------|
 | 关闭公告 | `announcement` 的 `enable` 设为 `false` |
-| 关闭日历 | `calendar` 的 `enable` 设为 `false` |
-| 把日历移到左边 | `calendar` 的 `sidebar` 改为 `"left"` |
+| 关闭标签 | `tags` 的 `enable` 设为 `false` |
 | 调整排序 | 修改各组件的 `order` 值 |
 
 ---
@@ -546,42 +540,26 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 export const navBarConfig: NavBarConfig = {
     links: [
         LinkPreset.Home,     // 首页（内置）
-        LinkPreset.Archive,  // 归档（内置）
-
-        // 自定义一级菜单
         {
-            name: "链接",
-            url: "/links/",
-            icon: "material-symbols:link",
-            children: [           // 子菜单
-                {
-                    name: "GitHub",
-                    url: "https://github.com/sttez",
-                    external: true,   // 外部链接
-                    icon: "fa6-brands:github",
-                },
-            ],
+            name: "文章",
+            url: "/posts/",
+            icon: "material-symbols:article",
         },
-
-        // 自定义一级菜单
         {
-            name: "我的",
-            url: "/content/",
-            icon: "material-symbols:person",
-            children: [
-                {
-                    name: "记录",
-                    url: "/diary/",
-                    icon: "material-symbols:book",
-                },
-                {
-                    name: "相册",
-                    url: "/albums/",
-                    icon: "material-symbols:photo-library",
-                },
-            ],
+            name: "项目",
+            url: "/projects/",
+            icon: "material-symbols:work",
         },
-        // ... 更多菜单
+        {
+            name: "技能",
+            url: "/skills/",
+            icon: "material-symbols:psychology",
+        },
+        {
+            name: "关于我",
+            url: "/about/",
+            icon: "material-symbols:info",
+        },
     ],
 };
 ```
@@ -611,12 +589,12 @@ Mizuki 使用 [Iconify](https://iconify.design/) 图标系统，可以在这里�
 ```typescript
 featurePages: {
     anime: false,     // 番剧页面
-    diary: true,      // 日记页面
+    diary: false,     // 日记页面
     friends: true,    // 友链页面
     projects: true,   // 项目页面
     skills: true,     // 技能页面
-    timeline: true,   // 时间线页面
-    albums: true,     // 相册页面
+    timeline: false,  // 时间线页面
+    albums: false,    // 相册页面
     devices: false,   // 设备页面
 },
 ```
@@ -833,7 +811,7 @@ tags: [JavaScript, 前端, 教程]
 ```
 
 **建议：**
-- 分类用宽泛的词（技术、生活、随笔）
+- 分类用三个固定值之一：`技术`、`指南`、`踩坑`
 - 标签用具体的词（JavaScript、React、CSS）
 - 每篇文章 3-5 个标签为宜
 
@@ -968,7 +946,7 @@ export const profileConfig: ProfileConfig = {
             url: "mailto:你的邮箱@example.com",
         },
     ],
-    donationImage: "/images/donate.webp",  // 赞赏码（图片放 public/images/ 下）
+    donationImages: ["/images/donate1.webp", "/images/donate2.webp"],  // 赞赏码（两张图片，放 public/images/ 下）
     donationTitle: "赏个鸡腿",              // 点击赞赏图标后显示的标题
 };
 ```
@@ -981,7 +959,7 @@ export const profileConfig: ProfileConfig = {
 | `name` | 侧边栏显示的名字 |
 | `bio` | 一句话简介，支持打字机效果 |
 | `links` | 社交链接图标，点击跳转 |
-| `donationImage` | 赞赏码图片路径，放 `public/images/` 下，不想要可以删掉这行 |
+| `donationImages` | 赞赏码图片路径数组（两张），放 `public/images/` 下，不想要可以删掉这行 |
 | `donationTitle` | 点击赞赏图标弹窗里显示的标题 |
 
 ### 怎么加减社交图标？
@@ -990,13 +968,13 @@ export const profileConfig: ProfileConfig = {
 
 ### 怎么关闭赞赏码？
 
-删掉 `donationImage` 和 `donationTitle` 两行，或者把 `donationImage` 改为空字符串 `""`。
+删掉 `donationImages` 和 `donationTitle` 两行。
 
 ---
 
 ## 8. 页面调整总览
 
-博客有很多页面，你可以按需开关和调整。
+博客目前启用的页面有：文章、项目、技能、友链、关于我。
 
 ### 开关页面
 
@@ -1005,12 +983,12 @@ export const profileConfig: ProfileConfig = {
 ```typescript
 featurePages: {
     anime: false,     // 番剧页面  ← true 开启，false 关闭
-    diary: true,      // 日记页面
+    diary: false,     // 日记页面
     friends: true,    // 友链页面
     projects: true,   // 项目页面
     skills: true,     // 技能页面
-    timeline: true,   // 时间线页面
-    albums: true,     // 相册页面
+    timeline: false,  // 时间线页面
+    albums: false,    // 相册页面
     devices: false,   // 设备页面
 },
 ```
@@ -1020,33 +998,25 @@ featurePages: {
 ### 关闭页面后还要做什么？
 
 1. 把上面的值改为 `false`
-2. 在导航栏配置中删除对应的菜单链接（见下面）
+2. 在导航栏配置中删除对应的菜单链接
 
 ### 调整导航栏菜单
 
-编辑 `src/config.ts` 中的 `navBarConfig`：
+编辑 `src/config.ts` 中的 `navBarConfig`，在 `links` 数组里增减对象。
 
 ```typescript
 export const navBarConfig: NavBarConfig = {
     links: [
         LinkPreset.Home,     // 首页（内置，保留）
-        LinkPreset.Archive,  // 归档（内置，保留）
-
-        // 自定义菜单：按需增减
+        {
+            name: "文章",
+            url: "/posts/",
+            icon: "material-symbols:article",
+        },
         {
             name: "项目",
             url: "/projects/",
             icon: "material-symbols:work",
-        },
-        {
-            name: "技能",
-            url: "/skills/",
-            icon: "material-symbols:code",
-        },
-        {
-            name: "友链",
-            url: "/links/",
-            icon: "material-symbols:link",
         },
         // 想加子菜单？用 children：
         {
@@ -1055,14 +1025,14 @@ export const navBarConfig: NavBarConfig = {
             icon: "material-symbols:person",
             children: [
                 {
-                    name: "记录",
-                    url: "/diary/",
-                    icon: "material-symbols:book",
+                    name: "技能",
+                    url: "/skills/",
+                    icon: "material-symbols:psychology",
                 },
                 {
-                    name: "相册",
-                    url: "/albums/",
-                    icon: "material-symbols:photo-library",
+                    name: "关于我",
+                    url: "/about/",
+                    icon: "material-symbols:info",
                 },
             ],
         },
@@ -1071,25 +1041,12 @@ export const navBarConfig: NavBarConfig = {
 ```
 
 **增减菜单：** 在 `links` 数组里增减对象。
-**外部链接：** 加 `external: true`，如 `{ name: "GitHub", url: "https://github.com/xxx", external: true, icon: "fa6-brands:github" }`。
+**外部链接：** 加 `external: true`。
+**子菜单：** 用 `children` 数组。
 
 ### 图标从哪里找？
 
 去 https://iconify.design/ 搜索，复制图标名称填入 `icon` 字段。
-
----
-
-### 其他数据文件一览
-
-| 页面 | 数据文件 | 说明 |
-|------|---------|------|
-| 友链 | `src/data/friends.ts` | 添加友情链接 |
-| 日记 | `src/data/diary.ts` | 写日记条目 |
-| 时间线 | `src/data/timeline.ts` | 个人经历时间线 |
-| 相册 | `src/data/albums.ts` | 照片相册 |
-| 设备 | `src/data/devices.ts` | 设备展示 |
-
-每个文件都有 TypeScript 接口定义字段，照着已有的数据格式添加即可。
 
 ---
 
@@ -1181,20 +1138,20 @@ Vercel 会自动检测到项目配置（`vercel.json`），无需额外设置。
 
 ### 如何修改字体？
 
-在 `src/config.ts` 中找到 `font` 配置：
+本博客使用系统默认字体（system-ui），无需额外配置。如果想使用自定义字体，在 `src/config.ts` 中找到 `font` 配置：
 
 ```typescript
 font: {
     asciiFont: {
-        fontFamily: "ZenMaruGothic-Medium",  // 英文字体
+        fontFamily: "你的英文字体名",
         fontWeight: "400",
-        localFonts: ["ZenMaruGothic-Medium.ttf"],  // 字体文件名
+        localFonts: ["字体文件.ttf"],
         enableCompress: true,
     },
     cjkFont: {
-        fontFamily: "微软雅黑",               // 中文字体
+        fontFamily: "你的中文字体名",
         fontWeight: "500",
-        localFonts: ["微软雅黑.ttf"],
+        localFonts: ["字体文件.ttf"],
         enableCompress: true,
     },
 },
@@ -1210,4 +1167,4 @@ font: {
 
 ---
 
-> 本指南基于 Mizuki v7.6.5 编写，已适配项目分类、技能展示等功能。如有问题，请参考项目 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)。
+> 本指南基于 Mizuki v7.6.5 编写。如有问题，请参考项目 [GitHub Issues](https://github.com/matsuzaka-yuki/Mizuki/issues)。
