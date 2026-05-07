@@ -13,22 +13,49 @@ const { class: className, headings } = Astro.props;
 const hasHeadings = headings && headings.length > 0;
 ---
 
-<div id="right-sidebar" class:list={[className, "w-full"]}>
-  {hasHeadings ? (
-    <!-- 文章页：悬浮 TOC -->
-    <div class="toc-sticky">
+{hasHeadings ? (
+  <!-- 文章页：右侧固定悬浮 TOC -->
+  <div id="article-toc-float" class="hidden lg:block">
+    <div id="article-toc-inner">
       <TOC headings={headings} />
     </div>
-  ) : (
-    <!-- 其他页面：只显示站点统计和标签 -->
+  </div>
+) : (
+  <div id="right-sidebar" class:list={[className, "w-full"]}>
     <div class="flex flex-col w-full gap-4">
       <SiteStats />
       <Tags />
     </div>
-  )}
-</div>
+  </div>
+)}
 
 <style>
+  #article-toc-float {
+    position: fixed;
+    right: calc((100vw - var(--page-width)) / 2 - 17.5rem - 1rem);
+    top: 5rem;
+    width: 17.5rem;
+    max-height: calc(100vh - 6rem);
+    overflow: hidden;
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  #article-toc-float.show {
+    opacity: 1;
+  }
+
+  #article-toc-inner {
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #article-toc-inner::-webkit-scrollbar {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     #right-sidebar {
       display: var(--sidebar-mobile-display, block);
@@ -46,16 +73,24 @@ const hasHeadings = headings && headings.length > 0;
       display: var(--sidebar-desktop-display, block);
     }
   }
-
-  .toc-sticky {
-    position: sticky;
-    top: 5rem;
-    max-height: calc(100vh - 6rem);
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  .toc-sticky::-webkit-scrollbar {
-    display: none;
-  }
 </style>
+
+<script is:inline>
+(function() {
+  var toc = document.getElementById('article-toc-float');
+  if (!toc) return;
+
+  var threshold = 400;
+
+  function onScroll() {
+    if (window.scrollY > threshold) {
+      toc.classList.add('show');
+    } else {
+      toc.classList.remove('show');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
