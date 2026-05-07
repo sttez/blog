@@ -279,7 +279,7 @@ export const profileConfig: ProfileConfig = {
 			url: "mailto:your@email.com",
 		},
 	],
-	donationImage: "/images/donate.webp", // 赞赏码图片，放到 public/images/ 下后取消注释
+	donationImages: ["/images/donate1.webp", "/images/donate2.webp"], // 赞赏码图片数组，放到 public/images/ 下后取消注释
 	donationTitle: "赏个鸡腿",
 };
 

@@ -50,22 +50,26 @@ const umamiBaseUrl = umamiConfig.baseUrl || "";
                 <Icon name={profileConfig.links[0].icon} class="text-[1.5rem]"></Icon>
                 {profileConfig.links[0].name}
             </a>}
-            {profileConfig.donationImage && (
+            {profileConfig.donationImages && profileConfig.donationImages.length > 0 && (
                 <button id="donation-btn" aria-label={profileConfig.donationTitle || "赞赏"} class="btn-regular rounded-lg h-10 w-10 active:scale-90">
                     <Icon name="material-symbols:favorite" class="text-[1.5rem]"></Icon>
                 </button>
             )}
         </div>
-        {profileConfig.donationImage && (
+        {profileConfig.donationImages && profileConfig.donationImages.length > 0 && (
             <div id="donation-popup" class="hidden fixed inset-0 z-[999] flex items-center justify-center bg-black/30" style="display:none;">
-                <div class="bg-[var(--card-bg)] rounded-xl p-3 shadow-xl max-w-[14rem] w-full mx-4 relative">
+                <div class="bg-[var(--card-bg)] rounded-xl p-3 shadow-xl max-w-[26rem] w-full mx-4 relative">
                     <button id="donation-close" class="absolute top-2 right-2 btn-regular rounded-lg h-8 w-8 flex items-center justify-center">
                         <Icon name="fa6-solid:xmark" class="text-lg"></Icon>
                     </button>
                     {profileConfig.donationTitle && (
                         <div class="text-center text-sm font-bold mb-3 text-75">{profileConfig.donationTitle}</div>
                     )}
-                    <img src={profileConfig.donationImage} alt="赞赏码" class="mx-auto rounded-lg w-full" loading="lazy" />
+                    <div class="flex gap-2 justify-center">
+                        {profileConfig.donationImages.map((src) => (
+                            <img src={src} alt="赞赏码" class="rounded-lg w-[calc(50%-0.25rem)]" loading="lazy" />
+                        ))}
+                    </div>
                 </div>
             </div>
         )}
@@ -125,7 +129,7 @@ const umamiBaseUrl = umamiConfig.baseUrl || "";
     </script>
 )}
 
-{profileConfig.donationImage && (
+{profileConfig.donationImages && profileConfig.donationImages.length > 0 && (
     <script is:inline>
     (function() {
         var btn = document.getElementById('donation-btn');

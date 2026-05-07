@@ -217,7 +217,7 @@ export type ProfileConfig = {
 		enable: boolean; // 是否启用打字机效果
 		speed?: number; // 打字速度（毫秒）
 	};
-	donationImage?: string; // 赞赏码图片路径（相对于 public 目录）
+	donationImages?: string[]; // 赞赏码图片路径数组（相对于 public 目录）
 	donationTitle?: string; // 赞赏码标题
 };
 
