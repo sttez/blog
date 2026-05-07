@@ -1,14 +1,14 @@
 # build output
 dist/
-docs/
 
-# claude code
-.superpowers/
-# generated types
+# Astro generated
 .astro/
 
 # dependencies
 node_modules/
+
+# pnpm
+.pnpm-store/
 
 # logs
 npm-debug.log*
@@ -18,41 +18,27 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
 
-# content repository (independent mode)
-/content/
-*.backup
-
-# Large zip files
-*.zip
-
-# macOS-specific files
-.DS_Store
-
-.vercel
-
+# lock files (project uses pnpm-lock.yaml)
 package-lock.json
 bun.lockb
 yarn.lock
 
-# ide
-.idea
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
 *.iml
+.vscode/
 
-cache/
-fuwari/
-src/data/myself.ts
-src/pages/myself.astro
+# Vercel
+.vercel
 
-# Bangumi generated data
-src/data/bangumi-data.json
-
-
-.env.example
-.github
-.vscode
-
-Mizuki博客使用教程.md
-Mizuki博客项目瘦身方案.md
-.gitignore
+# misc
+*.zip
+*.backup
+*.tsbuildinfo
