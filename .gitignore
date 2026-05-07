@@ -42,3 +42,5 @@ Thumbs.db
 *.zip
 *.backup
 *.tsbuildinfo
+.superpowers/
+docs/
