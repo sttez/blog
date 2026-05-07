@@ -375,7 +375,11 @@ const jsonLd = {
                 wrap.style.left = (rect.right + 8) + 'px';
                 wrap.style.top = (rect.top + 8) + 'px';
             }
-            positionShare();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', positionShare);
+            } else {
+                positionShare();
+            }
             window.addEventListener('resize', positionShare, { passive: true });
 
             var url = encodeURIComponent(window.location.href);
