@@ -1,89 +1,102 @@
 ---
-import { render } from "astro:content";
-import Markdown from "@components/misc/Markdown.astro";
-import PostMetadata from "@components/PostMeta.astro";
-import ImageWrapper from "@components/misc/ImageWrapper.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
-import { getFileDirFromPath } from "@utils/url-utils";
+import { projectsData } from "../data/projects";
 import { Icon } from "astro-icon/components";
-import { siteConfig } from "../config";
 
 const allPosts = await getSortedPosts();
-const latestPost = allPosts[0];
+const latestPosts = allPosts.slice(0, 3);
 
-if (!latestPost) {
-    return Astro.redirect("/404/");
-}
-
-const rendered = await render(latestPost);
-const Content = rendered.Content;
-const words = rendered.remarkPluginFrontmatter.words;
-const minutes = rendered.remarkPluginFrontmatter.minutes;
+// 精选项目
+const featuredIds = ["mindhub", "micro-expression-recognizer", "ciyuanju"];
+const featuredProjects = projectsData.filter(p => featuredIds.includes(p.id));
 ---
 
 <MainGridLayout>
-    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4">
-        <div class="card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full">
-            <!-- word count and reading time -->
-            <div class="flex flex-row text-black/30 dark:text-white/30 gap-5 mb-3 transition onload-animation">
-                <div class="flex flex-row items-center">
-                    <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
-                        <Icon name="material-symbols:notes-rounded" />
+    <!-- 问候语 -->
+    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-6">
+        <div class="card-base z-10 px-9 py-10 relative w-full text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-black/90 dark:text-white/90 mb-3 onload-animation">
+                Hi, I'm <span class="text-[var(--primary)]">sttez</span>
+            </h1>
+            <p class="text-lg text-black/50 dark:text-white/50 onload-animation">
+                AI 开发工程师 / 全栈开发 / 二次元
+            </p>
+        </div>
+    </div>
+
+    <!-- 最新文章 -->
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4 relative
+                   before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
+                   before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4 onload-animation">
+            最新文章
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {latestPosts.map((post) => (
+                <a href={`/${post.id}/`}
+                   class="card-base p-5 hover:shadow-lg transition-shadow duration-300 group block">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-2 py-0.5 text-xs rounded-full bg-blue-600/20 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                            {post.data.category || "未分类"}
+                        </span>
+                        <span class="text-xs text-black/40 dark:text-white/40">
+                            {post.data.published.toISOString().split('T')[0]}
+                        </span>
                     </div>
-                    <div class="text-sm">{words} 字</div>
-                </div>
-                <div class="flex flex-row items-center">
-                    <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
-                        <Icon name="material-symbols:schedule-outline-rounded" />
+                    <h3 class="text-base font-bold text-black/90 dark:text-white/90 mb-2 group-hover:text-[var(--primary)] transition-colors">
+                        {post.data.title}
+                    </h3>
+                    <p class="text-sm text-black/50 dark:text-white/50 line-clamp-2">
+                        {post.data.description || ""}
+                    </p>
+                </a>
+            ))}
+        </div>
+    </div>
+
+    <!-- 精选项目 -->
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-black/90 dark:text-white/90 mb-4 relative
+                   before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
+                   before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4 onload-animation">
+            精选项目
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {featuredProjects.map((project) => (
+                <a href={`/projects/#${project.id}`}
+                   class="card-base p-5 hover:shadow-lg transition-shadow duration-300 group block">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class={`px-2 py-0.5 text-xs rounded-full ${
+                            project.status === 'completed'
+                                ? 'bg-green-600/20 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                : project.status === 'in-progress'
+                                ? 'bg-yellow-600/20 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                : 'bg-gray-600/20 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400'
+                        }`}>
+                            {project.status === 'completed' ? '已完成' : project.status === 'in-progress' ? '进行中' : '计划中'}
+                        </span>
                     </div>
-                    <div class="text-sm">{minutes} 分钟</div>
-                </div>
-            </div>
-
-            <!-- title -->
-            <div class="relative onload-animation">
-                <div class="transition w-full block font-bold mb-3
-                    text-3xl md:text-[2.25rem]/[2.75rem]
-                    text-black/90 dark:text-white/90
-                    md:before:w-1 before:h-5 before:rounded-md before:bg-[var(--primary)]
-                    before:absolute before:top-[0.75rem] before:left-[-1.125rem]">
-                    {latestPost.data.title}
-                </div>
-            </div>
-
-            <!-- metadata -->
-            <div class="onload-animation">
-                <PostMetadata
-                    className="mb-5"
-                    published={latestPost.data.published}
-                    updated={latestPost.data.updated}
-                    tags={latestPost.data.tags}
-                    category={latestPost.data.category || undefined}
-                    id={latestPost.id}
-                />
-                {(!latestPost.data.image || (latestPost.data.image && !siteConfig.showCoverInContent)) && (
-                    <div class="mt-4 border-[var(--line-divider)] border-dashed border-b-[1px] mb-5" />
-                )}
-            </div>
-
-            <!-- cover image -->
-            {latestPost.data.image && siteConfig.showCoverInContent && (
-                <>
-                    <div class="mt-4" />
-                    <ImageWrapper
-                        id="post-cover"
-                        src={latestPost.data.image}
-                        basePath={getFileDirFromPath(latestPost.filePath || '')}
-                        class="mb-8 rounded-xl banner-container onload-animation"
-                    />
-                </>
-            )}
-
-            <!-- content -->
-            <Markdown class="mb-6 markdown-content onload-animation">
-                <Content />
-            </Markdown>
+                    <h3 class="text-base font-bold text-black/90 dark:text-white/90 mb-2 group-hover:text-[var(--primary)] transition-colors">
+                        {project.title}
+                    </h3>
+                    <p class="text-sm text-black/50 dark:text-white/50 line-clamp-2 mb-3">
+                        {project.description}
+                    </p>
+                    <div class="flex flex-wrap gap-1.5">
+                        {project.techStack.slice(0, 4).map((tech) => (
+                            <span class="px-2 py-0.5 text-xs bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60 rounded">
+                                {tech}
+                            </span>
+                        ))}
+                        {project.techStack.length > 4 && (
+                            <span class="px-2 py-0.5 text-xs text-black/40 dark:text-white/40">
+                                +{project.techStack.length - 4}
+                            </span>
+                        )}
+                    </div>
+                </a>
+            ))}
         </div>
     </div>
 </MainGridLayout>

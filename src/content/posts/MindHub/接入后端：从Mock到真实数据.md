@@ -1,6 +1,6 @@
 ---
 title: "接入后端：从 Mock 到真实数据"
-published: 2026-05-07
+published: 2026-05-04
 tags: [Supabase, DeepSeek, 数据库, AI API, Firecrawl]
 pinned: false
 description: "接入 Supabase 数据库和 DeepSeek AI API，完成从 mock 数据到生产级数据层的切换。"

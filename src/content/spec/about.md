@@ -1,49 +1,82 @@
+# 张浩辉
 
-This website is built with the **Astro** framework using the [Mizuki](https://github.com/matsuzaka-yuki/mizuki) theme.
-
-::github{repo="matsuzaka-yuki/Mizuki"}
-
-## 🌟 Theme Features
-
-### 🎨 Design & User Experience
-- **Modern & Elegant Design** - Clean, minimalist interface with beautiful typography
-- **Fully Responsive** - Optimized for all devices from mobile to desktop
-- **Dark/Light Mode** - Automatic theme switching with smooth transitions
-- **Beautiful Typography** - Enhanced readability with JetBrains Mono font
-- **Smooth Animations** - Fluid page transitions and interactive elements
-
-### 🔍 Content & Search
-- **Advanced Search** - Powered by [Pagefind](https://pagefind.app/) for fast, accurate results
-- **Enhanced Markdown** - Extended syntax with code highlighting and math support
-- **Interactive Table of Contents** - Auto-scroll navigation for long articles
-- **RSS Feed Generation** - Stay updated with automatic feed generation
-- **Reading Time Estimation** - Know how long articles take to read
-- **Post Categorization** - Organize content with tags and categories
-
-
-
-### 📱 Special Pages
-- **Anime Tracking Page** - Track your anime watching progress with ratings
-- **Friends Links Page** - Showcase friend websites with beautiful cards
-- **Diary/Moments Page** - Share life moments like social media posts
-- **Archive Page** - Organized timeline view of all posts
-- **About Page** - Customizable personal introduction (this page!)
-
-### 🛠 Technical Features
-- **Enhanced Code Blocks** - Powered by [Expressive Code](https://expressive-code.com/)
-- **Math Support** - LaTeX rendering with KaTeX for mathematical expressions
-- **Image Optimization** - PhotoSwipe gallery with lazy loading
-- **SEO Optimized** - Built-in sitemap and meta tags for better search visibility
-- **Performance Optimized** - Fast loading with caching and optimization
-- **Comment System Ready** - Integration support for Twikoo comments
-
-### 🎯 Advanced Markdown Features
-- **Callouts & Admonitions** - Beautiful info boxes with `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`
-- **Mathematical Equations** - Write LaTeX math with `$inline$` and `$$block$$` syntax
-- **GitHub Cards** - Embed repository cards with `::github{repo="user/repo"}`
-- **Syntax Highlighting** - Advanced code highlighting with line numbers
-- **Copy Code Buttons** - Easy code copying functionality
+> AI 开发工程师
+>
+> 📧 aoui_zh@163.com &nbsp;|&nbsp; 📱 13427569839 &nbsp;|&nbsp; GitHub: [sttez](https://github.com/sttez)
 
 ---
 
-*Built with ❤️ using Astro and inspired by modern web design principles.*
+## 教育背景
+
+### 长春理工大学　|　计算机科学技术学院
+
+数据科学与大数据技术（本科）　　2021.09 - 2025.06
+
+主修课程：面向对象程序设计（Java）、Python 语言程序设计、数据结构与算法
+
+---
+
+## 工作经历
+
+### 新疆文盛有限公司　|　AI 开发工程师
+
+- 负责 AI 智能体的开发与迭代，基于大语言模型构建企业级智能对话系统
+- 搭建本地知识库，实现文档解析、向量化存储与语义检索（RAG）
+- 参与企业管理系统开发，将 AI 能力集成到业务流程中
+
+---
+
+## 项目经历
+
+### MindHub　|　AI 知识工作台　[查看项目 →](/projects/#mindhub)
+
+`2024.01 - 至今`　　技术栈：`Next.js` `TypeScript` `Tailwind CSS` `React Flow` `Cytoscape.js` `Supabase` `DeepSeek API`
+
+- AI 驱动的知识管理 Web 应用，核心功能包括资源管理、任务流编辑、知识图谱可视化和 AI 智能洞察
+- 使用 Next.js App Router 静态导出方案，实现纯前端部署
+- 接入 Supabase 后端服务，完成从 Mock 数据到真实数据的迁移
+- 集成 DeepSeek API 实现 AI 智能分析，Cytoscape.js 实现知识图谱可视化
+
+### 微表情识别系统　|　深度学习毕业设计　[查看项目 →](/projects/#micro-expression-recognizer)
+
+`2025.05 - 2026.05`　　技术栈：`Python` `PyTorch` `OpenCV` `dlib` `PyQt5` `Gradio`
+
+- 基于三流 CNN + 双向 LSTM 的微表情识别系统，支持图像、视频和实时摄像头预测
+- 设计三流 CNN 网络架构，结合光流与外观特征进行多模态融合
+- 使用双向 LSTM 捕捉时序动态特征，基于 CASME2 数据集训练评估
+- 开发 PyQt5 桌面应用与 Gradio Web 演示界面
+
+### ARCH ACG　|　ACG 创作者社区平台　[查看项目 →](/projects/#arch-acg)
+
+`2025.12 - 至今`　　技术栈：`React 19` `TypeScript` `Vite` `Tailwind CSS` `Zustand` `Spring Boot 3.2` `MySQL` `Redis` `WebSocket` `Docker`
+
+- 面向 COSER、摄影师、妆娘等 ACG 创作者的综合社区平台，支持约单服务、动态分享与即时通讯
+- 负责前端架构搭建，实现响应式布局与核心组件封装
+- 对接 Spring Boot 后端 API，完成用户认证、动态发布、约单交易等模块
+- 集成 WebSocket 实现实时聊天与消息通知
+
+### 次元聚　|　二次元社区微信小程序　[查看项目 →](/projects/#ciyuanju)
+
+`2026.04`　　技术栈：`微信小程序` `Node.js` `Express` `MySQL` `Socket.IO`
+
+- 二次元社区小程序，支持动态发布、约单交易、实时聊天、教程分享
+- 独立完成小程序前端与 Node.js 后端的全栈开发
+- 使用 Socket.IO 实现实时聊天，设计 MySQL 数据库结构
+
+### Momentify　|　朋友圈美化工具　[查看项目 →](/projects/#momentify)
+
+`2026.05 - 至今`　　技术栈：`Flutter` `Dart` `Riverpod` `GoRouter` `Hive`
+
+- Flutter 朋友圈美化应用，支持模板拼图、滤镜贴纸、文字编辑与九宫格导出
+- 基于 CustomPainter 实现自定义画布与模板拼图功能
+- 使用 Riverpod 状态管理 + GoRouter 路由 + Hive 本地持久化
+
+---
+
+## 专业技能
+
+- **AI / 机器学习：** PyTorch、OpenCV、scikit-learn、NumPy、DeepSeek API、RAG、大语言模型、智能体开发
+- **前端：** React、Next.js、TypeScript、Tailwind CSS、Vite、微信小程序、Flutter
+- **后端：** Node.js、Express、Spring Boot、Python、Supabase
+- **数据库：** MySQL、Redis、Hive
+- **工具：** Docker、Git、Socket.IO、WebSocket

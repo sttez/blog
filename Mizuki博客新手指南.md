@@ -360,8 +360,8 @@ export const profileConfig: ProfileConfig = {
     bio: "一句话介绍自己",                  // ← 个人简介
     links: [
         { name: "Bilibili", icon: "fa6-brands:bilibili", url: "https://bilibili.com" },
-        { name: "GitHub", icon: "fa6-brands:github", url: "https://github.com/你的用户名" },
-        { name: "Email", icon: "material-symbols:mail", url: "mailto:你的邮箱@example.com" },
+        { name: "GitHub", icon: "fa6-brands:github", url: "https://github.com/sttez" },
+        { name: "Email", icon: "material-symbols:mail", url: "aoui_zh@163.com" },
     ],
     donationImages: ["/images/donate1.webp", "/images/donate2.webp"],  // 赞赏码图片（可选，两张）
     donationTitle: "赏个鸡腿",
@@ -839,6 +839,28 @@ tags: [JavaScript, 前端, 教程]
     tags: ["前端", "开源"],              // 标签（可选）
 },
 ```
+
+### 用 AI 快速生成项目数据
+
+你可以把项目的 README 或简介丢给 AI，让它帮你生成符合格式的数据。参考提示词：
+
+> 请根据以下项目信息，生成一个符合 Mizuki 博客主题的 TypeScript 项目数据对象。
+>
+> 项目信息：
+> {在这里粘贴你的项目 README、仓库介绍或简要描述}
+>
+> 要求：
+> 1. 输出一个完整的 TypeScript 对象，直接可以粘贴到 projectsData 数组中
+> 2. id 使用小写字母+连字符的格式（如 my-awesome-app）
+> 3. category 从 "web" | "mobile" | "desktop" | "other" 中选择
+> 4. status 根据项目实际情况从 "completed" | "in-progress" | "planned" 中选择
+> 5. techStack 尽量写具体的技术名称（如 "React"、"TypeScript"、"Supabase"）
+> 6. description 用中文写一段简洁的项目介绍（20-40字）
+> 7. tags 3-5 个，用英文
+> 8. 如果有在线链接就填 liveDemo/visitUrl，有 GitHub 仓库就填 sourceCode，没有就省略
+> 9. image 填 ""（暂无图片）
+> 10. startDate 填项目开始的大致日期，格式 YYYY-MM-DD
+> 11. 如果项目已完成，加上 endDate 和 featured: true
 
 ### 关联文章到项目
 

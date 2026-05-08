@@ -111,31 +111,31 @@ const levelData = [
 	},
 ];
 
-// 计算矩形图数据（按技能分类）
+// 计算矩形图数据（按技能分类）- 使用固定分布值
 const categoryData = [
 	{
 		name: i18n(I18nKey.skillsFrontend),
-		value: stats.byCategory.frontend,
+		value: 34,
 		color: categoryColors.frontend,
 	},
 	{
 		name: i18n(I18nKey.skillsBackend),
-		value: stats.byCategory.backend,
+		value: 45,
 		color: categoryColors.backend,
 	},
 	{
 		name: i18n(I18nKey.skillsDatabase),
-		value: stats.byCategory.database,
+		value: 60,
 		color: categoryColors.database,
 	},
 	{
 		name: i18n(I18nKey.skillsTools),
-		value: stats.byCategory.tools,
+		value: 23,
 		color: categoryColors.tools,
 	},
 	{
 		name: i18n(I18nKey.skillsOther),
-		value: stats.byCategory.other,
+		value: 43,
 		color: categoryColors.other,
 	},
 ];
@@ -155,8 +155,10 @@ const levelSegments = levelData.map((item) => {
 	};
 });
 
-// 计算矩形图最大值用于比例计算
-const maxCategory = Math.max(...categoryData.map((item) => item.value), 1);
+// 计算矩形图最大值用于比例计算（加 20% 余量避免进度条撑满）
+const maxCategory = Math.max(...categoryData.map((item) => item.value), 1) * 1.2;
+// 分类数值总和，用于百分比计算
+const totalCategory = categoryData.reduce((sum, item) => sum + item.value, 0);
 
 // 计算百分比用于显示
 const calculatePercentage = (value: number, total: number) => {
@@ -267,15 +269,12 @@ const calculatePercentage = (value: number, total: number) => {
     <div class="space-y-5">
       {categoryData.map((item, index) => {
         const percentage = maxCategory > 0 ? (item.value / maxCategory) * 100 : 0;
-        const actualPercentage = calculatePercentage(item.value, stats.total);
+        const actualPercentage = calculatePercentage(item.value, totalCategory);
         return (
           <div data-key={index}>
             <div class="flex justify-between text-sm mb-2">
               <div class="flex items-center">
                 <span class="text-black/90 dark:text-white/90 font-medium">{item.name}</span>
-                <span class="ml-2 text-xs px-2 py-0.5 rounded-full bg-gray-600/20 dark:bg-gray-700 text-black/60 dark:text-white/60">
-                  {item.value}
-                </span>
               </div>
               <span class="text-black/70 dark:text-white/70 font-medium">{actualPercentage}%</span>
             </div>

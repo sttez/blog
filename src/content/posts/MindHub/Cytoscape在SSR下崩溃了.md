@@ -1,6 +1,6 @@
 ---
 title: "Cytoscape 在 SSR 下崩溃了"
-published: 2026-05-07
+published: 2026-04-27
 tags: [Cytoscape, Next.js, SSR, 知识图谱, 踩坑]
 pinned: false
 description: "Cytoscape.js 需要真实 DOM 才能初始化，但 Next.js 在服务端预渲染时根本没有 DOM"

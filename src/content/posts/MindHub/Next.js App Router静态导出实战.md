@@ -1,6 +1,6 @@
 ---
 title: "Next.js App Router 静态导出实战：不靠服务器也能跑的知识管理工具"
-published: 2026-05-07
+published: 2026-04-30
 tags: [Next.js, App Router, 静态导出, SSG, 前端架构]
 pinned: false
 description: "从零开始用 Next.js 16 App Router + output: 'export' 构建纯静态知识管理应用的实战经验。"

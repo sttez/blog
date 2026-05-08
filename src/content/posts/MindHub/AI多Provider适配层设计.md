@@ -1,6 +1,6 @@
 ---
 title: "AI 多 Provider 适配层设计：一套代码搞定 DeepSeek、MiMo、OpenAI"
-published: 2026-05-07
+published: 2026-05-01
 tags: [AI, DeepSeek, MiMo, OpenAI, 适配层, TypeScript]
 pinned: false
 description: "如何设计一个轻量级的 AI Provider 抽象层，在 DeepSeek、MiMo、OpenAI 之间无缝切换。"

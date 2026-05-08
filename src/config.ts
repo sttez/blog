@@ -247,7 +247,7 @@ export const navBarConfig: NavBarConfig = {
 			icon: "material-symbols:psychology",
 		},
 		{
-			name: "关于我",
+			name: "简历",
 			url: "/about/",
 			icon: "material-symbols:info",
 		},
@@ -276,7 +276,7 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Email",
 			icon: "material-symbols:mail",
-			url: "mailto:your@email.com",
+			url: "aoui_zh@163.com",
 		},
 	],
 	donationImages: ["/images/donate1.webp", "/images/donate2.webp"], // 赞赏码图片数组，放到 public/images/ 下后取消注释
@@ -494,12 +494,7 @@ export const pioConfig: import("./types/config").PioConfig = {
 	hiddenOnMobile: true, // 默认在移动设备上隐藏
 	dialog: {
 		welcome: "欢迎来到 Mizuki 博客！", // 欢迎词
-		touch: [
-			"你在干嘛呀？",
-			"别摸了别摸了！",
-			"变态！",
-			"不要欺负我啦！",
-		], // 触摸提示
+		touch: ["你在干嘛呀？", "别摸了别摸了！", "变态！", "不要欺负我啦！"], // 触摸提示
 		home: "点击这里回到首页！", // 首页提示
 		skin: ["想看看我的新衣服吗？", "新衣服真好看~"], // 换装提示
 		close: "QWQ 下次再见~", // 关闭提示

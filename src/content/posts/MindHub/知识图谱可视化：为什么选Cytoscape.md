@@ -1,6 +1,6 @@
 ---
 title: "知识图谱可视化：为什么选 Cytoscape.js"
-published: 2026-05-07
+published: 2026-04-27
 tags: [Cytoscape.js, 知识图谱, 可视化, 前端, React]
 pinned: false
 description: "对比 Cytoscape.js、D3.js、React Flow、Vis.js 四个图可视化库，选择 Cytoscape.js 构建 MindHub 知识图谱的完整思考过程。"
