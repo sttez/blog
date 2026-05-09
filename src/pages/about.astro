@@ -36,6 +36,51 @@ const title = i18n(I18nKey.about);
             <Markdown class="mt-2">
                 <Content />
             </Markdown>
+
+            <!-- PDF 简历预览 -->
+            <div class="mt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-black/90 dark:text-white/90 relative
+                              before:w-1 before:h-6 before:rounded-md before:bg-[var(--primary)]
+                              before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4">
+                        简历预览
+                    </h2>
+                    <a href="/assets/resume.pdf" download="张浩辉-个人简历.pdf"
+                       class="btn-regular px-4 py-2 rounded-lg h-fit text-sm font-medium
+                              hover:shadow-lg transition-shadow flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        下载简历
+                    </a>
+                </div>
+                <div id="pdf-container" class="flex flex-col items-center gap-2"></div>
+            </div>
+
+            <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+            <script is:inline>
+            (async function() {
+                const container = document.getElementById('pdf-container');
+                const url = '/assets/resume.pdf';
+                const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+                const pdf = await pdfjsLib.getDocument(url).promise;
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    canvas.style.maxWidth = '100%';
+                    canvas.style.height = 'auto';
+                    canvas.className = 'rounded-lg shadow-md';
+                    container.appendChild(canvas);
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+                }
+            })();
+            </script>
         </div>
     </div>
 </MainGridLayout>

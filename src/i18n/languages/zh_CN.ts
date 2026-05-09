@@ -3,7 +3,7 @@ import type { Translation } from "../translation";
 
 export const zh_CN: Translation = {
 	[Key.home]: "主页",
-	[Key.about]: "关于我们",
+	[Key.about]: "我的简历",
 	[Key.archive]: "归档",
 	[Key.search]: "搜索",
 	[Key.other]: "其他",
@@ -11,7 +11,7 @@ export const zh_CN: Translation = {
 	// 导航栏标题
 	[Key.navLinks]: "链接",
 	[Key.navMy]: "我的",
-	[Key.navAbout]: "关于",
+	[Key.navAbout]: "简历",
 	[Key.navOthers]: "其他",
 
 	[Key.tags]: "标签",

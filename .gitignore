@@ -44,3 +44,8 @@ Thumbs.db
 *.tsbuildinfo
 .superpowers/
 docs/
+
+# Claude Code
+graphify-out/
+CLAUDE.md
+技能指示.md
