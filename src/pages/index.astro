@@ -5,7 +5,9 @@ import { projectsData } from "../data/projects";
 import { Icon } from "astro-icon/components";
 
 const allPosts = await getSortedPosts();
-const latestPosts = allPosts.slice(0, 3);
+const latestPosts = [...allPosts]
+    .sort((a, b) => new Date(b.data.published).getTime() - new Date(a.data.published).getTime())
+    .slice(0, 3);
 
 // 精选项目
 const featuredIds = ["mindhub", "micro-expression-recognizer", "ciyuanju"];
