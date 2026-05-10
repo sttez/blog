@@ -2,7 +2,7 @@
 
 > AI 开发工程师
 >
-> 📧 aoui_zh@163.com &nbsp;|&nbsp; 📱 13427569839 &nbsp;|&nbsp; GitHub: [sttez](https://github.com/sttez)
+> 📧 aoui_zh@163.com &nbsp;|&nbsp; 📱 &nbsp;|&nbsp; GitHub: [sttez](https://github.com/sttez)
 
 ---
 
