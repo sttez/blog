@@ -1,6 +1,7 @@
 ---
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
+import { getPostUrl } from "@utils/url-utils";
 import { projectsData } from "../data/projects";
 import { Icon } from "astro-icon/components";
 
@@ -36,7 +37,7 @@ const featuredProjects = projectsData.filter(p => featuredIds.includes(p.id));
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             {latestPosts.map((post) => (
-                <a href={`/${post.id}/`}
+                <a href={getPostUrl(post)}
                    class="card-base p-5 hover:shadow-lg transition-shadow duration-300 group block">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="px-2 py-0.5 text-xs rounded-full bg-blue-600/20 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
