@@ -41,9 +41,26 @@ const umamiBaseUrl = umamiConfig.baseUrl || "";
         </div>
         <div class="flex gap-2 justify-center mb-1">
             {profileConfig.links.length > 1 && profileConfig.links.map(item =>
+                item.name === "Email" ? (
+                    <div class="relative">
+                        <button aria-label={item.name} class="btn-regular rounded-lg h-10 w-10 active:scale-90 email-trigger">
+                            <Icon name={item.icon} class="text-[1.5rem]"></Icon>
+                        </button>
+                        <div class="email-popover hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 bg-[var(--card-bg)] rounded-xl px-4 py-3 shadow-xl border border-black/10 dark:border-white/10 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-medium text-75 select-all">{item.url}</span>
+                                <button class="email-copy-btn btn-regular rounded-lg h-7 px-2 flex items-center justify-center gap-1 active:scale-90" data-email={item.url} aria-label="复制邮箱">
+                                    <Icon name="fa6-regular:copy" class="text-sm email-copy-icon"></Icon>
+                                    <span class="email-copy-text text-xs hidden">已复制</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
                     <a rel="me" aria-label={item.name} href={item.url} target="_blank" class="btn-regular rounded-lg h-10 w-10 active:scale-90">
                         <Icon name={item.icon} class="text-[1.5rem]"></Icon>
                     </a>
+                )
             )}
             {profileConfig.links.length == 1 && <a rel="me" aria-label={profileConfig.links[0].name} href={profileConfig.links[0].url} target="_blank"
                                             class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
@@ -142,3 +159,69 @@ const umamiBaseUrl = umamiConfig.baseUrl || "";
     })();
     </script>
 )}
+
+<script is:inline>
+(function() {
+    function init() {
+        var triggers = document.querySelectorAll('.email-trigger');
+        if (!triggers.length) return;
+        triggers.forEach(function(trigger) {
+            if (trigger.dataset.bound) return;
+            trigger.dataset.bound = '1';
+            var popover = trigger.nextElementSibling;
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var allPopovers = document.querySelectorAll('.email-popover');
+                for (var i = 0; i < allPopovers.length; i++) {
+                    if (allPopovers[i] !== popover) allPopovers[i].classList.add('hidden');
+                }
+                popover.classList.toggle('hidden');
+            });
+            var copyBtn = popover.querySelector('.email-copy-btn');
+            var copyIcon = popover.querySelector('.email-copy-icon');
+            var copyText = popover.querySelector('.email-copy-text');
+            copyBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var email = copyBtn.getAttribute('data-email');
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(email).then(function() {
+                        copyIcon.classList.add('hidden');
+                        copyText.classList.remove('hidden');
+                        setTimeout(function() {
+                            copyIcon.classList.remove('hidden');
+                            copyText.classList.add('hidden');
+                        }, 1500);
+                    });
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = email;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    copyIcon.classList.add('hidden');
+                    copyText.classList.remove('hidden');
+                    setTimeout(function() {
+                        copyIcon.classList.remove('hidden');
+                        copyText.classList.add('hidden');
+                    }, 1500);
+                }
+            });
+        });
+        document.addEventListener('click', function() {
+            var allPopovers = document.querySelectorAll('.email-popover');
+            for (var i = 0; i < allPopovers.length; i++) {
+                allPopovers[i].classList.add('hidden');
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
