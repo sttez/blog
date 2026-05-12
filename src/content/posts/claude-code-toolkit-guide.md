@@ -32,6 +32,7 @@ draft: false
 - [四、Plugins 插件](#四plugins-插件)
   - [4.1 webnovel-writer 网文写作套件](#41-webnovel-writer-网文写作套件)
   - [4.2 andrej-karpathy-skills 编码规范](#42-andrej-karpathy-skills-编码规范)
+  - [4.3 mattpocock/skills 工程实践技能集](#43-mattpocockskills-工程实践技能集)
 - [五、MCP 服务](#五mcp-服务)
   - [5.1 Context7 文档查询](#51-context7-文档查询)
   - [5.2 Firecrawl 网页抓取](#52-firecrawl-网页抓取)
@@ -793,6 +794,57 @@ Gstack 是一个集成的 AI 开发工具栈，提供浏览器自动化、QA 测
 2. 简洁优先 — 200 行能 50 行解决就重写
 3. 精准改动 — 只碰必须改的
 4. 目标驱动 — 定义成功标准，循环验证
+
+---
+
+### 4.3 mattpocock/skills 工程实践技能集
+
+| 项目 | 说明 |
+|------|------|
+| **来源** | `mattpocock/skills` |
+| **作者** | Matt Pocock（Total TypeScript 创始人） |
+| **安装方式** | `npx skills add mattpocock/skills` |
+| **定位** | 面向真实工程的可组合技能，非 "vibe coding" |
+
+**核心理念：** 基于数十年工程经验，解决 AI 编码四大失败模式 — 需求不一致、表达冗余、代码不可用、架构混乱。技能设计小巧、可适配、可组合，兼容任何模型。
+
+**安装后需运行：** `/setup-matt-pocock-skills` — 配置 Issue 追踪器（GitHub/Linear/本地文件）、分类标签、文档目录。
+
+**工程类（Engineering）：**
+
+| 技能 | 触发 | 用途 |
+|------|------|------|
+| `/grill-with-docs` | `/grill-with-docs` | 深度对齐 session — 挑战方案、统一术语、更新 CONTEXT.md 和 ADR，建立 Agent 与项目的共享语言 |
+| `/tdd` | `/tdd` | 红-绿-重构循环，逐个垂直切片构建功能或修复 bug |
+| `/diagnose` | `/diagnose` | 受控调试循环：复现 → 最小化 → 假设 → 检测 → 修复 → 回归测试 |
+| `/to-prd` | `/to-prd` | 将当前对话上下文合成为 PRD，提交为 GitHub Issue |
+| `/to-issues` | `/to-issues` | 将计划/PRD 拆解为独立可领取的 GitHub Issue（垂直切片） |
+| `/triage` | `/triage` | 通过状态机对 Issue 进行分类，支持多人角色流转 |
+| `/zoom-out` | `/zoom-out` | 要求 Agent 从更高层面解释某段代码的上下文 |
+| `/improve-codebase-architecture` | `/improve-codebase-architecture` | 找到代码库中可 "加深" 的模块，改善架构设计 |
+| `/prototype` | `/prototype` | 构建一次性原型验证设计 — 终端 App 或多个 UI 变体 |
+
+**生产力类（Productivity）：**
+
+| 技能 | 触发 | 用途 |
+|------|------|------|
+| `/grill-me` | `/grill-me` | 对计划/设计进行无情追问，直到决策树所有分支闭合 |
+| `/handoff` | `/handoff` | 将当前对话压缩为交接文档，供其他 Agent 继续 |
+| `/caveman` | `/caveman` | 极简沟通模式，减少约 75% 的 token 用量 |
+| `/write-a-skill` | `/write-a-skill` | 创建新技能，含正确结构、渐进式披露和捆绑资源 |
+
+**杂项（Misc）：**
+
+| 技能 | 触发 | 用途 |
+|------|------|------|
+| `/setup-pre-commit` | `/setup-pre-commit` | 配置 Husky pre-commit hooks + lint-staged + Prettier + 类型检查 |
+| `/scaffold-exercises` | `/scaffold-exercises` | 创建练习目录结构（问题/解答/讲解） |
+
+**与本环境其他技能的关系：**
+- `/grill-me` 与 `/brainstorming` 互补 — 前者是通用追问，后者是带视觉的设计收敛
+- `/tdd` 强化了编码工作流的反馈循环
+- `/diagnose` 与 Gstack 的 `/investigate` 定位相似但方法论不同
+- `/grill-with-docs` 通过 CONTEXT.md 建立共享语言，是该包最独特的能力
 
 ---
 
