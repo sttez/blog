@@ -9,6 +9,9 @@ import {
 	siteConfig,
 } from "@/config";
 import { umamiConfig } from "../config";
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+injectSpeedInsights();
 
 const BANNER_HEIGHT = 35;
 const BANNER_HEIGHT_EXTEND = 30;
